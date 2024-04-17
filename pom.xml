@@ -33,6 +33,8 @@
 		</dependency>
 <!--deneme2-->
 
+<!--		simdi oldu mu bak-->
+
 
 		<dependency>
 			<groupId>org.postgresql</groupId>
