@@ -19,12 +19,12 @@ public class AhmetApplication {
 	@GetMapping
 	public List<User> hello() {
 		return List.of(
-				new User("name",
+				new User(1,
 						"surname",
 						"email",
 						"password",
 						"username",
-						1,
+						"name",
 						true,
 						true)
 				);

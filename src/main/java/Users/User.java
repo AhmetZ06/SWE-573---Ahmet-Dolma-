@@ -1,12 +1,26 @@
 package Users;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import lombok.*;
 
+
+@Entity
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class User {
+    @Id
+    private Integer UserID;
+    private String name;
+    private String surname;
+    private String email;
+    private String password;
+    private String username;
+
+    boolean isModerator;
+    boolean isCommunityCreator;
 
     @Override
     public String toString() {
@@ -21,14 +35,5 @@ public class User {
                 ", isCommunityCreator=" + isCommunityCreator +
                 '}';
     }
-
-    private String name;
-    private String surname;
-    private String email;
-    private String password;
-    private String username;
-    private Integer UserID;
-    boolean isModerator;
-    boolean isCommunityCreator;
 
 }
