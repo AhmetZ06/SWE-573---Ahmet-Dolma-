@@ -1,26 +1,36 @@
-package Users;
+package com.community.Community.models.Users;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.annotation.Nullable;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
-
 @Entity
+@Table(name = "users")
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class User {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer UserID;
-    private String name;
-    private String surname;
-    private String email;
-    private String password;
-    private String username;
 
-    boolean isModerator;
-    boolean isCommunityCreator;
+    @Column(nullable = false)
+    private String name;
+
+    @Column(nullable = true)
+    private String surname;
+
+    @Column(nullable = false, unique=true)
+    private String email;
+
+    @Column(nullable = false)
+    private String password;
+
+    @Column(nullable = false, unique=true)
+    private String username;
 
     @Override
     public String toString() {
@@ -31,8 +41,6 @@ public class User {
                 ", password='" + password + '\'' +
                 ", username='" + username + '\'' +
                 ", UserID=" + UserID +
-                ", isModerator=" + isModerator +
-                ", isCommunityCreator=" + isCommunityCreator +
                 '}';
     }
 
