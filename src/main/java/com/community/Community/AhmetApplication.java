@@ -1,6 +1,6 @@
 package com.community.Community;
 
-import Users.User;
+import com.community.Community.models.Users.User;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,9 +24,8 @@ public class AhmetApplication {
 						"email",
 						"password",
 						"username",
-						"name",
-						true,
-						true)
+						"name"
+						)
 				);
 	}
 }
