@@ -23,15 +23,7 @@ public class AuthController {
         this.userService = userService;
     }
 
-    @PostMapping(value = "/register", consumes = "application/x-www-form-urlencoded")
-    public String registrationForm(@Valid @ModelAttribute("user") UserDto userDto,
-                                   BindingResult result,
-                                   Model model) {
-        return processRegistration(userDto, result, model);
-    }
-
-
-    @PostMapping(value = "api/register", consumes = "application/json")
+    @PostMapping(value = "/register/save", consumes = "application/json")
     @ResponseBody
     public ResponseEntity<?> registrationApi(@Valid @RequestBody UserDto userDto,
                                              BindingResult result) {
@@ -45,21 +37,4 @@ public class AuthController {
         return ResponseEntity.ok("User registered successfully");
     }
 
-    private String processRegistration(UserDto userDto, BindingResult result, Model model) {
-        User existingUser = userService.findUserByEmail(userDto.getEmail());
-        User existingUserByUsername = userService.findUserByUsername(userDto.getUsername());
-
-        if (existingUser != null) {
-            result.rejectValue("email", null, "There is already an account registered with this email");
-        }
-        if (existingUserByUsername != null) {
-            result.rejectValue("username", null, "There is already an account registered with this username");
-        }
-        if (result.hasErrors()) {
-            model.addAttribute("user", userDto);
-            return "register";
-        }
-        userService.saveUser(userDto);
-        return "redirect:/register?success";
-    }
 }

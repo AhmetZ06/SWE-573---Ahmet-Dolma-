@@ -1,4 +1,4 @@
-package com.community.Community.Config;
+package com.community.Community.Controller.WithoutAPI;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
