@@ -17,13 +17,13 @@ public class Roles_In_Communities {
     private User_Community_Composite_Key id;
 
     @ManyToOne
-    @MapsId("userId")
-    @JoinColumn(name = "user_id")
+    @MapsId("userId") // This should match exactly the property name in the composite key class
+    @JoinColumn(name = "user_id") // This should match the column name specified in the composite key class
     private User user;
 
     @ManyToOne
-    @MapsId("communityId")
-    @JoinColumn(name = "community_id")
+    @MapsId("communityId") // This should match exactly the property name in the composite key class
+    @JoinColumn(name = "community_id") // This should match the column name specified in the composite key class
     private Community community;
 
     @Column(nullable = false)

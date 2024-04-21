@@ -24,10 +24,10 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long UserID;
 
-    @Column(nullable = false)
+    @Column
     private String name;
 
-    @Column(nullable = true)
+    @Column
     private String surname;
 
     @Column(nullable = false, unique=true)

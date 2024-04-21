@@ -1,11 +1,9 @@
 package com.community.Community.Repositories;
-
-import com.community.Community.models.Posts.Post;
-import com.community.Community.models.Users.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import com.community.Community.models.Report;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface PostRepository extends JpaRepository<Post, Long> {
+public interface ReportRepository extends JpaRepository<Report, Long>{
 
 }

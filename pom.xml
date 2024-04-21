@@ -37,6 +37,11 @@
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 
+		<!--Timeleaf-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-thymeleaf</artifactId>
+		</dependency>
 
 		<dependency>
 			<groupId>org.postgresql</groupId>
@@ -56,6 +61,7 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+
         <dependency>
             <groupId>javax.validation</groupId>
             <artifactId>validation-api</artifactId>
@@ -68,7 +74,32 @@
 			<scope>test</scope>
 		</dependency>
 
+		<!--	Mail Dependency-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-mail</artifactId>
+			<version>3.2.5</version>
+		</dependency>
+		<!-- Spring Fox Dependencies -->
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+			<version>2.0.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-starter-webmvc-api</artifactId>
+			<version>2.0.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.thymeleaf.extras</groupId>
+			<artifactId>thymeleaf-extras-springsecurity6</artifactId>
+			<!-- Temporary explicit version to fix Thymeleaf bug -->
+			<version>3.1.1.RELEASE</version>
+		</dependency>
 	</dependencies>
+
+
 
 
 

@@ -9,8 +9,4 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface Roles_In_Com_Respository extends JpaRepository<Roles_In_Communities, Long> {
 
-    User findByUserId(Long userId);
-    Roles_In_Communities findByUserIdAndCommunityId(Long userId);
-
-
 }

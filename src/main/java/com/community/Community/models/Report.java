@@ -22,7 +22,7 @@ public class Report {
     private Post post;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "userId", nullable = false)
+    @JoinColumn(name = "UserId", nullable = false)
     private User user;
 
     @Column(nullable = false)
