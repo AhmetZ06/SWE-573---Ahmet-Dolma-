@@ -1,4 +1,4 @@
-package com.community.Community.Services;
+package com.community.Community.Services.UserServices;
 
 
 import com.community.Community.Repositories.UserRepository;

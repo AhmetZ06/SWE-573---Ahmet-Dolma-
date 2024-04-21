@@ -1,4 +1,4 @@
-package com.community.Community.Services;
+package com.community.Community.Services.UserServices;
 
 
 import com.community.Community.dto.UserDto;
@@ -11,7 +11,6 @@ public interface IUserService {
 
     User findUserByEmail(String email);
     User findUserByUsername(String username);
-
     List<UserDto> findAllUsers();
 
 }

@@ -8,7 +8,9 @@ import jakarta.validation.Valid;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import com.community.Community.dto.UserDto;
-import com.community.Community.Services.IUserService;
+import com.community.Community.Services.UserServices.IUserService;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 
 import java.util.List;
 
@@ -24,7 +26,7 @@ public class AuthController {
     // handler method to handle home page request
     @GetMapping("/index")
     public String home(){
-        return "index";
+        return "Login/index";
     }
 
     @GetMapping("/register")
@@ -32,7 +34,7 @@ public class AuthController {
         // create model object to store form data
         UserDto user = new UserDto();
         model.addAttribute("user", user);
-        return "register";
+        return "Login/register";
     }
 
     // handler method to handle user registration form submit request
@@ -53,9 +55,11 @@ public class AuthController {
                     "There is already an account registered with the same username");
         }
 
+
+
         if(result.hasErrors()){
             model.addAttribute("user", userDto);
-            return "/register";
+            return "Login/register";
         }
 
         userService.saveUser(userDto);
@@ -66,12 +70,12 @@ public class AuthController {
     public String users(Model model){
         List<UserDto> users = userService.findAllUsers();
         model.addAttribute("users", users);
-        return "users";
+        return "Entry/Users";
     }
 
     @GetMapping("/login")
     public String login(){
-        return "login";
+        return "Login/login";
     }
 
 
