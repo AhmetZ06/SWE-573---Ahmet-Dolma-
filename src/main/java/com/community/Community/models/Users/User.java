@@ -16,6 +16,7 @@ import com.community.Community.models.Users.Profile;
 @Table(name = "users")
 @Getter
 @Setter
+@Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -51,19 +52,6 @@ public class User {
         this.email = email;
         this.password = password;
         this.username = username;
-    }
-
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "name='" + name + '\'' +
-                ", surname='" + surname + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", username='" + username + '\'' +
-                ", UserID=" + UserID +
-                '}';
     }
 
 }
