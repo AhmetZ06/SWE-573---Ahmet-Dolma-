@@ -1,4 +1,4 @@
-package com.community.Community.Controller.WithoutAPI;
+package com.community.Community.Controller.ServerSide;
 
 import com.community.Community.Services.IUserService;
 import com.community.Community.dto.UserDto;
