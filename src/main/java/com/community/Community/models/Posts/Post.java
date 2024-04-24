@@ -33,16 +33,11 @@ public class Post {
     @Column(nullable = false)
     private boolean isArchived;
 
-    // One-to-many relationship with Discussion
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Discussion> discussions;
 
-    // One-to-many relationship with Report
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Report> reports;
-
-    // Constructors, toString and other methods
-    // Ensure you have appropriate constructors, getters, and setters as required.
 
     @Override
     public String toString() {

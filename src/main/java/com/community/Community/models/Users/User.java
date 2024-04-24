@@ -23,7 +23,7 @@ import com.community.Community.models.Users.Profile;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long UserID;
+    private long userId;
 
     @Column
     private String name;
@@ -46,7 +46,7 @@ public class User {
     private Profile profile;
 
     public User(long userID, String name, String surname, String email, String password, String username) {
-        UserID = userID;
+        userId = userID;
         this.name = name;
         this.surname = surname;
         this.email = email;

@@ -8,7 +8,6 @@ import java.util.List;
 
 public interface IUserService {
     void saveUser(UserDto userDto);
-
     User findUserByEmail(String email);
     User findUserByUsername(String username);
     List<UserDto> findAllUsers();

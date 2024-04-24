@@ -28,14 +28,4 @@ public class Report {
     @Column(nullable = false)
     private String reason;
 
-    // Other fields and methods can be added as required.
-
-    @Override
-    public String toString() {
-        return "Report{" +
-                "reportId=" + reportId +
-                ", reason='" + reason + '\'' +
-                // You may want to include user and post info, but be mindful of lazy loading.
-                '}';
-    }
 }

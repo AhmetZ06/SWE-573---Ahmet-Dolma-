@@ -49,6 +49,7 @@ public class AuthController {
         }
     }
 
+
     @PostMapping("/register")
     public ResponseEntity<?> registrationApi(@Valid @RequestBody UserDto userDto, BindingResult result) {
         if (result.hasErrors()) {
@@ -60,4 +61,5 @@ public class AuthController {
         userService.saveUser(userDto);
         return ResponseEntity.ok("User registered successfully");
     }
+
 }

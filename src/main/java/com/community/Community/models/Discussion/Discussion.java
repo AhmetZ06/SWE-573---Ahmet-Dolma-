@@ -26,12 +26,6 @@ public class Discussion {
     @Column(nullable = false)
     private boolean isArchived;
 
-    // You can add additional fields that represent the content of the discussion or relationships
-    // to other entities like comments if they are part of your model.
-
-    // Constructors, getters, setters, and other methods
-    // Lombok annotations will take care of generating these for you.
-
     @Override
     public String toString() {
         return "Discussion{" +

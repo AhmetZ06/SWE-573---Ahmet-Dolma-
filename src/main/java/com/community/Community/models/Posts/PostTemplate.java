@@ -21,12 +21,10 @@ public class PostTemplate {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long templateId;
 
-    // Reference to the creator of the template, a User who is the community creator
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "createdBy", nullable = false)
     private User creator;
 
-    // Reference to the Community that this template is associated with
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "communityId", nullable = false)
     private Community community;
@@ -35,21 +33,20 @@ public class PostTemplate {
     private String templateName;
 
     @Lob
-    private byte[] image; // For storing image data
+    private byte[] image;
 
     @Embedded
-    private Geolocation geolocation; // Using the embeddable Geolocation class
+    private Geolocation geolocation;
 
     @ElementCollection
     @CollectionTable(name = "template_contents", joinColumns = @JoinColumn(name = "templateId"))
     @MapKeyColumn(name = "content_type")
     @Column(name = "content")
-    private Map<String, String> contents; // For various strings like additional info
+    private Map<String, String> contents;
 
     @Temporal(TemporalType.TIMESTAMP)
-    private Date timeOfEvent; // For storing the time of an event associated with the template
+    private Date timeOfEvent;
 
-    // ... other fields and methods ...
 
     @Override
     public String toString() {
@@ -58,7 +55,6 @@ public class PostTemplate {
                 ", templateName='" + templateName + '\'' +
                 ", geolocation='" + geolocation + '\'' +
                 ", timeOfEvent=" + timeOfEvent +
-                // ... Add other fields if needed for the toString representation
                 '}';
     }
 }

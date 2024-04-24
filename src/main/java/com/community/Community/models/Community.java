@@ -3,6 +3,7 @@ package com.community.Community.models;
 import com.community.Community.models.Posts.*;
 import com.community.Community.models.PostTemplates.*;
 import com.community.Community.models.Users.Roles_In_Communities;
+import com.community.Community.models.Users.User;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -32,26 +33,17 @@ public class Community {
     @Column(nullable = false)
     private boolean isArchived;
 
-    // One-to-many relationship with Post
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "admin_id", nullable = false)
+    private User admin;
+
     @OneToMany(mappedBy = "community", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Post> posts;
 
-    // One-to-many relationship with PostTemplate
     @OneToMany(mappedBy = "community", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<PostTemplate> templates;
 
-    // One-to-many relationship with RolesInCommunities
     @OneToMany(mappedBy = "community", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Roles_In_Communities> rolesInCommunities;
 
-    @Override
-    public String toString() {
-        return "Community{" +
-                "communityId=" + communityId +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", isPrivate=" + isPrivate +
-                ", isArchived=" + isArchived +
-                '}';
-    }
 }
