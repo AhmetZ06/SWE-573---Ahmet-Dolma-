@@ -27,6 +27,14 @@ public class Community {
     @Column(nullable = false)
     private String description;
 
+    public void setIsPrivate() {
+        this.isPrivate = true;
+    }
+
+    public void setIsPrivate(boolean isPrivate) {
+        this.isPrivate = isPrivate;
+    }
+
     @Column(nullable = false)
     private boolean isPrivate;
 

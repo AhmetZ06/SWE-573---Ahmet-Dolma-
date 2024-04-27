@@ -32,7 +32,7 @@ public class CommunityService implements ICommunityService{
         Community community = new Community();
         community.setName(communityDto.getName());
         community.setDescription(communityDto.getDescription());
-        community.setPrivate(communityDto.isPrivate());
+        community.setIsPrivate(communityDto.getisPrivate());
         community.setKralid(communityDto.getKralid());
         communityRepository.save(community);
         System.out.println(STR."Community saved");

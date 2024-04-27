@@ -3,15 +3,14 @@ package com.community.Community.dto;
 import com.community.Community.models.Users.User;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Getter
-@Setter
+
 @NoArgsConstructor
 @AllArgsConstructor
 public class Community_Create_Dto {
+
+
 
 
     @NotEmpty(message = "Name should not be empty")
@@ -24,4 +23,39 @@ public class Community_Create_Dto {
         this.kralid = admin.getUserId();
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public boolean getisPrivate() {
+        return isPrivate;
+    }
+
+    public void setIsPrivate(boolean isPrivate) {
+        this.isPrivate = isPrivate;
+    }
+
+    public void  setisPrivate() {
+        this.isPrivate = true;
+    }
+
+    public long getKralid() {
+        return kralid;
+    }
+
+    public void setKralid(long kralid) {
+        this.kralid = kralid;
+    }
 }
