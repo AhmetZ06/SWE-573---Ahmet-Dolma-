@@ -35,6 +35,7 @@ public class Community {
         this.isPrivate = isPrivate;
     }
 
+
     @Column(nullable = false)
     private boolean isPrivate;
 
