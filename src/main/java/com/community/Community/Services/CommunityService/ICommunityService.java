@@ -10,6 +10,8 @@ public interface ICommunityService {
     void saveCommunity(Community_Create_Dto communityDto);
     Community findByName(String name);
     Community findByCommunityId(long communityId);
+
+    void setAdminbyDefault(Community_Create_Dto communityCreateDto);
 //    void setAdminbyDefault(long communityId);
 
 }

@@ -56,21 +56,24 @@ public class CommunityService implements ICommunityService{
         communityCreateDto.setDescription(community.getDescription());
         communityCreateDto.setPrivate(community.isPrivate());
 
-//        public void setAdminbyDefault(long communityId) {
-//
-//            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//            String currentUsername = authentication.getName();
-//
-//            User user = userRepository.findByUsername(currentUsername);
-//
-//            if (user != null) {
-//                long userId = user.getUserID();
-//            }
-//
-//            communityCreateDto.setAdmin_id(user.getUserID());
-//
-//        }
-
         return communityCreateDto;
+    }
+
+
+    public void setAdminbyDefault(Community_Create_Dto communityCreateDto) {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentUsername = authentication.getName();
+
+        User user = userRepository.findByEmail(currentUsername);
+
+        long adminID = 0;
+
+        if (user != null) {
+            adminID = userRepository.findByUserId(user.getUserId()).getUserId();
+        }
+
+        communityCreateDto.setKralid(adminID);
+
     }
 }

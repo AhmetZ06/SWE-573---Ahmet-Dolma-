@@ -1,30 +1,64 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Create Community</title>
-    <link rel="stylesheet" href="/css/bootstrap.min.css">
-    <script src="/js/bootstrap.bundle.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+          crossorigin="anonymous">
 </head>
 <body>
-<div class="container mt-5">
-    <h2>Create New Community</h2>
-    <form th:action="@{/createCommunity/save}" th:object="${community}" method="post">
-        <div class="mb-3">
-            <label for="name" class="form-label">Name</label>
-            <input type="text" class="form-control" id="name" th:field="*{name}" placeholder="Enter community name" required>
-            <div class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" th:href="@{/index}">Community System</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <!-- Add any navigation links here -->
         </div>
-        <div class="mb-3">
-            <label for="description" class="form-label">Description</label>
-            <textarea class="form-control" id="description" th:field="*{description}" rows="3" placeholder="Describe your community"></textarea>
+    </div>
+</nav>
+<br /><br />
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="text-center">Create Community</h2>
+                </div>
+                <div class="card-body">
+                    <form th:action="@{/createCommunity/save}" method="post" class="form-horizontal" th:object="${community}">
+                        <div class="form-group mb-3">
+                            <label for="communityName" class="control-label">Community Name</label>
+                            <input type="text" id="communityName" name="name" class="form-control" th:field="*{name}" required="required" />
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label for="communityDescription" class="control-label">Community Description</label>
+                            <input type="text" id="communityDescription" name="description" class="form-control" th:field="*{description}" required="required" />
+                        </div>
+
+<!--                        <div class="form-group mb-3">-->
+<!--                            <label for="communityType" class="form-check-label">-->
+<!--                                <input type="checkbox" id="communityType" name="isPrivate" class="form-check-input" th:field="*{isPrivate}" />-->
+<!--                                Community is private-->
+<!--                            </label>-->
+<!--                        </div>-->
+
+                        <div class="form-group mb-3">
+                            <button type="submit" class="btn btn-primary">Create Community</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
-        <div class="mb-3 form-check">
-            <input type="checkbox" class="form-check-input" id="isPrivate" th:field="*{isPrivate}">
-            <label class="form-check-label" for="isPrivate">Private Community</label>
-        </div>
-        <button type="submit" class="btn btn-primary">Create Community</button>
-    </form>
+    </div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-8SjQbzi9d0x3QqfSAMz1sLzGp4ow2mK8Za3aFtSsV0xGpoxp7eVMNxsMf2SJjRlq"
+        crossorigin="anonymous"></script>
 </body>
 </html>

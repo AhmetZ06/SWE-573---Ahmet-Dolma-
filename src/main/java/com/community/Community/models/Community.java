@@ -33,9 +33,11 @@ public class Community {
     @Column(nullable = false)
     private boolean isArchived;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "admin_id", nullable = false)
-    private User admin;
+    @Column
+    private String image;
+
+    @Column
+    private long kralid;
 
     @OneToMany(mappedBy = "community", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Post> posts;

@@ -29,7 +29,6 @@ public class CommunityController {
 
     @GetMapping("/createCommunity")
     public String showCreateCommunityForm(Model model) {
-
         Community_Create_Dto community= new Community_Create_Dto();
         model.addAttribute("community", community);
         return "Communities/createCommunity";
@@ -40,12 +39,25 @@ public class CommunityController {
                                   BindingResult result,
                                   Model model) {
 
+        String communityName = community_create_dto.getName();
+
+        communityService.setAdminbyDefault(community_create_dto);
+
+        if (communityName == null || communityName.isEmpty()) {
+            result.rejectValue("name", "error.name", "Community name cannot be empty");
+            model.addAttribute("community", community_create_dto);
+            return "Communities/createCommunity";
+        }
+
+        communityService.setAdminbyDefault(community_create_dto);
+
         Community existingCommunity = communityService.findByName(community_create_dto.getName());
 
         if (existingCommunity != null && existingCommunity.getName() != null && !existingCommunity.getName().isEmpty()) {
             result.rejectValue("name", null,
                     "There is already a community registered with the same name");
         }
+
         if (result.hasErrors()) {
             model.addAttribute("community", community_create_dto);
             return "Communities/createCommunity";
