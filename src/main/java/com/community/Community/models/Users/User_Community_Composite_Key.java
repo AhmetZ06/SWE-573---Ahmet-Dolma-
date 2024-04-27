@@ -14,7 +14,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class User_Community_Composite_Key implements Serializable {
 
-    @Column(name = "user_id")
+    @Column(name = "userId")
     private Long userId;
 
     @Column(name = "community_id")

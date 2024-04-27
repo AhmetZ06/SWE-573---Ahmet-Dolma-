@@ -49,8 +49,6 @@ public class CommunityController {
             return "Communities/createCommunity";
         }
 
-        communityService.setAdminbyDefault(community_create_dto);
-
         Community existingCommunity = communityService.findByName(community_create_dto.getName());
 
         if (existingCommunity != null && existingCommunity.getName() != null && !existingCommunity.getName().isEmpty()) {

@@ -37,7 +37,7 @@ public class Community {
     private String image;
 
     @Column
-    private long kralid;
+    private Long kralid;
 
     @OneToMany(mappedBy = "community", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Post> posts;

@@ -33,6 +33,7 @@ public class CommunityService implements ICommunityService{
         community.setName(communityDto.getName());
         community.setDescription(communityDto.getDescription());
         community.setPrivate(communityDto.isPrivate());
+        community.setKralid(communityDto.getKralid());
         communityRepository.save(community);
         System.out.println(STR."Community saved");
     }
@@ -48,16 +49,16 @@ public class CommunityService implements ICommunityService{
     }
 
 
-    private Community_Create_Dto mapToCommunity_Create_Dto(Community community){
-
-        Community_Create_Dto communityCreateDto = new Community_Create_Dto();
-
-        communityCreateDto.setName(community.getName());
-        communityCreateDto.setDescription(community.getDescription());
-        communityCreateDto.setPrivate(community.isPrivate());
-
-        return communityCreateDto;
-    }
+//    private Community_Create_Dto mapToCommunity_Create_Dto(Community community){
+//
+//        Community_Create_Dto communityCreateDto = new Community_Create_Dto();
+//
+//        communityCreateDto.setName(community.getName());
+//        communityCreateDto.setDescription(community.getDescription());
+//        communityCreateDto.setPrivate(community.isPrivate());
+//        setAdminbyDefault(communityCreateDto);
+//        return communityCreateDto;
+//    }
 
 
     public void setAdminbyDefault(Community_Create_Dto communityCreateDto) {
@@ -70,7 +71,7 @@ public class CommunityService implements ICommunityService{
         long adminID = 0;
 
         if (user != null) {
-            adminID = userRepository.findByUserId(user.getUserId()).getUserId();
+            adminID = user.getUserId();
         }
 
         communityCreateDto.setKralid(adminID);

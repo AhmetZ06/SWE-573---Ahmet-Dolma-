@@ -1,17 +1,26 @@
-<table>
-    <thead>
-    <tr>
-        <th> Title </th>
-        <th> Author </th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:if="${books.empty}">
-        <td colspan="2"> No Books Available </td>
-    </tr>
-    <tr th:each="book : ${books}">
-        <td><span th:text="${book.title}"> Title </span></td>
-        <td><span th:text="${book.author}"> Author </span></td>
-    </tr>
-    </tbody>
-</table>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>WELCOME PAGE</title>
+</head>
+<body>
+<h1>Welcome!</h1>
+
+<!-- Display the authenticated user's name -->
+<p th:if="${#authorization.expression('isAuthenticated()')}">
+    Hello, <span th:text="${#authentication.getName()}">User</span>!
+</p>
+
+<p>Click <a th:href="@{/hello}">here</a> to see a greeting.</p>
+
+<!-- Buttons for community actions -->
+<p>
+    <a th:href="@{/createCommunity}">
+        <button>Create Community</button>
+    </a>
+    <a th:href="@{/showCommunity}">
+        <button>Show Community</button>
+    </a>
+</p>
+</body>
+</html>

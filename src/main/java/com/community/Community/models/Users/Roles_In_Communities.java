@@ -18,7 +18,7 @@ public class Roles_In_Communities {
 
     @ManyToOne
     @MapsId("userId") // This should match exactly the property name in the composite key class
-    @JoinColumn(name = "user_id") // This should match the column name specified in the composite key class
+    @JoinColumn(name = "userId") // This should match the column name specified in the composite key class
     private User user;
 
     @ManyToOne
