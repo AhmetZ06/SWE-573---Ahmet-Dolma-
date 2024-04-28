@@ -48,8 +48,15 @@
     <div class="row">
         <div class="col-md-12">
             <h2>Posts</h2>
+            <!-- Check if the user is 'kralid' and adjust the link accordingly -->
+
             <!-- Create Post Button -->
             <div class="mb-3">
+                <div class="mb-3">
+                    <!-- Check if the user is 'kralid' and show an enhanced creation link or a standard one -->
+                    <a th:if="${isKralid}" th:href="@{/createPostTemplate(communityId=${community.communityId})}" class="btn btn-success">Create Post with Template</a>
+                </div>
+
                 <a th:href="@{/createPost(communityId=${community.communityId})}" class="btn btn-success">Create Post</a>
             </div>
             <div th:each="post : ${community.posts}">

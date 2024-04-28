@@ -1,11 +1,16 @@
 package com.community.Community.Controller.ServerSide;
 
 import com.community.Community.Services.CommunityService.ICommunityService;
+import com.community.Community.Services.UserServices.CustomUserDetailsService;
+import com.community.Community.Services.UserServices.IUserService;
 import com.community.Community.dto.Community_Create_Dto;
 import com.community.Community.dto.UserDto;
 import com.community.Community.models.Community;
+import com.community.Community.models.Users.User;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,8 +24,11 @@ public class CommunityController {
 
     private ICommunityService communityService;
 
-    public CommunityController(ICommunityService communityService) {
+    private CustomUserDetailsService userService;
+
+    public CommunityController(ICommunityService communityService, CustomUserDetailsService userService) {
         this.communityService = communityService;
+        this.userService = userService;
     }
 
     //Show communities
@@ -78,6 +86,12 @@ public class CommunityController {
 
         Community community = communityService.getCommunityById(communityId);
         model.addAttribute("community", community);
+
+        User currentUser = userService.getAuthenticatedUser();
+
+        boolean isKralid = currentUser.getUserId()== community.getKralid();
+
+        model.addAttribute("isKralid", isKralid);
 
         return "Communities/genericCommunityTemplate";
     }

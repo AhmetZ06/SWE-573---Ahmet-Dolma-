@@ -2,6 +2,7 @@ package com.community.Community.Services.UserServices;
 
 import com.community.Community.Repositories.UserRepository;
 import com.community.Community.models.Users.User;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -26,6 +27,10 @@ public class CustomUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException("User not found with email: " + email);
         }
         return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), Collections.emptyList());
+    }
+
+    public User getAuthenticatedUser() {
+        return userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
     }
 
 
