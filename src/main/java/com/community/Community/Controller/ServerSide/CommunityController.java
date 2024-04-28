@@ -11,6 +11,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
@@ -69,6 +70,16 @@ public class CommunityController {
         communityService.saveCommunity(community_create_dto);
 
         return "redirect:/communities";
+    }
+
+
+    @GetMapping("/Communities/community/{communityId}")
+    public String showCommunity(@PathVariable("communityId") Long communityId, Model model) {
+
+        Community community = communityService.getCommunityById(communityId);
+        model.addAttribute("community", community);
+
+        return "Communities/genericCommunityTemplate";
     }
 
 

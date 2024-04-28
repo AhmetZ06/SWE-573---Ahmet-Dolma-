@@ -52,7 +52,7 @@
             <td th:text="${community.description}">Community Description</td>
             <td th:class="${community.isPrivate} ? 'private-style' : 'public-style'" th:text="${community.isPrivate} ? 'Private' : 'Public'">Community Type</td>
             <td>
-                <a th:href="@{'/community/' + ${community.communityId}}" class="btn btn-primary">Enter</a>
+                <a th:href="@{'Communities/community/' + ${community.communityId}}" class="btn btn-primary">Enter</a>
             </td>
         </tr>
         </tbody>

@@ -84,10 +84,10 @@ public class CommunityService implements ICommunityService{
     }
 
 
-
-
-
-
+    @Override
+    public Community getCommunityById(Long communityId) {
+        return communityRepository.findById(communityId).orElse(null);
+    }
 
 
 
