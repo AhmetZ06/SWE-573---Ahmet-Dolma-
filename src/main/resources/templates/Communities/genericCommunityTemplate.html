@@ -54,7 +54,7 @@
             <div class="mb-3">
                 <div class="mb-3">
                     <!-- Check if the user is 'kralid' and show an enhanced creation link or a standard one -->
-                    <a th:if="${isKralid}" th:href="@{/createPostTemplate(communityId=${community.communityId})}" class="btn btn-success">Create Post with Template</a>
+                    <a th:if="${isKralid}" th:href="@{/createPostTemplate(communityId=${community.communityId})}" class="btn btn-success">Create Post Template</a>
                 </div>
 
                 <a th:href="@{/createPost(communityId=${community.communityId})}" class="btn btn-success">Create Post</a>
