@@ -5,6 +5,7 @@ import com.community.Community.dto.Community_Create_Dto;
 import com.community.Community.dto.UserDto;
 import com.community.Community.models.Community;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,8 +22,12 @@ public class CommunityController {
         this.communityService = communityService;
     }
 
-    @GetMapping("/communities")
-    public String showCommunities() {
+    //Show communities
+    @GetMapping("/Communities")
+    public String showCommunities(Model model) {
+
+        model.addAttribute("listCommunities", communityService.getAllCommunities());
+
         return "Communities/Communities";
     }
 
@@ -65,5 +70,7 @@ public class CommunityController {
 
         return "redirect:/communities";
     }
+
+
 
 }

@@ -12,6 +12,8 @@ public interface ICommunityService {
     Community findByCommunityId(long communityId);
 
     void setAdminbyDefault(Community_Create_Dto communityCreateDto);
+
+    List<Community> getAllCommunities();
 //    void setAdminbyDefault(long communityId);
 
 }

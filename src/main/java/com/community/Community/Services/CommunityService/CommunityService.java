@@ -77,4 +77,19 @@ public class CommunityService implements ICommunityService{
         communityCreateDto.setKralid(adminID);
 
     }
+
+    @Override
+    public List<Community> getAllCommunities() {
+        return communityRepository.findAll();
+    }
+
+
+
+
+
+
+
+
+
+
 }
