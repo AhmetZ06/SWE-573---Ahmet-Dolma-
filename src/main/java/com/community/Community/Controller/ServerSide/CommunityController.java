@@ -77,7 +77,7 @@ public class CommunityController {
 
         communityService.saveCommunity(community_create_dto);
 
-        return "redirect:/communities";
+        return "redirect:/Communities";
     }
 
 

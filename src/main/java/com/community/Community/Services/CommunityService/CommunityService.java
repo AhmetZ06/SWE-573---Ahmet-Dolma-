@@ -27,14 +27,12 @@ public class CommunityService implements ICommunityService{
     @Override
     public void saveCommunity(Community_Create_Dto communityDto) {
 
-        System.out.println(STR."Saving Community: \{communityDto.getName()}");
         Community community = new Community();
         community.setName(communityDto.getName());
         community.setDescription(communityDto.getDescription());
         community.setIsPrivate(communityDto.getisPrivate());
         community.setKralid(communityDto.getKralid());
         communityRepository.save(community);
-        System.out.println(STR."Community saved");
     }
 
     @Override

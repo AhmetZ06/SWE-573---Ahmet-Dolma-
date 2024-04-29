@@ -14,7 +14,6 @@ import java.util.Set;
 @Table(name = "post_templates")
 @Getter
 @Setter
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class PostTemplate {

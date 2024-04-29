@@ -26,12 +26,4 @@ public class Discussion {
     @Column(nullable = false)
     private boolean isArchived;
 
-    @Override
-    public String toString() {
-        return "Discussion{" +
-                "discussionId=" + discussionId +
-                ", title='" + title + '\'' +
-                ", isArchived=" + isArchived +
-                '}';
-    }
 }

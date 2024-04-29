@@ -77,6 +77,10 @@ public class PostService implements IPostService{
 
         User user = userService.getAuthenticatedUser();
 
+        long originalid = user.getoriginalId(user.getUserId());
+
+        user.setUserId(originalid);
+
         post.setUser(user);
 
         post.setTitle(postDto.getTitle());

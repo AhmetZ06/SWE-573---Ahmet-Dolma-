@@ -9,11 +9,4 @@ public class Geolocation {
 
     // Constructors, getters, setters...
 
-    @Override
-    public String toString() {
-        return "Geolocation{" +
-                "latitude=" + latitude +
-                ", longitude=" + longitude +
-                '}';
-    }
 }
