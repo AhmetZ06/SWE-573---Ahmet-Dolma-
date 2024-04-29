@@ -8,6 +8,7 @@ import lombok.*;
 
 import java.util.Date;
 import java.util.Map;
+import java.util.Set;
 
 @Entity
 @Table(name = "post_templates")
@@ -17,44 +18,36 @@ import java.util.Map;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PostTemplate {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long templateId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "createdBy", nullable = false)
-    private User creator;
-
-    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "communityId", nullable = false)
     private Community community;
 
-    @Column(nullable = false)
-    private String templateName;
+    @OneToMany(mappedBy = "template")
+    private Set<Post> posts;
 
-    @Lob
-    private byte[] image;
+    @Column
+    private boolean include_title = true;
 
-    @Embedded
-    private Geolocation geolocation;
+    @Column
+    private boolean include_ContentData = true;
 
-    @ElementCollection
-    @CollectionTable(name = "template_contents", joinColumns = @JoinColumn(name = "templateId"))
-    @MapKeyColumn(name = "content_type")
-    @Column(name = "content")
-    private Map<String, String> contents;
+    @Column
+    private boolean include_Image = false;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date timeOfEvent;
+    @Column
+    private boolean include_Geolocation = false;
+
+    @Column
+    private boolean include_Discussion = false;
+
+    @Column
+    private boolean include_Report = false;
 
 
-    @Override
-    public String toString() {
-        return "PostTemplate{" +
-                "templateId=" + templateId +
-                ", templateName='" + templateName + '\'' +
-                ", geolocation='" + geolocation + '\'' +
-                ", timeOfEvent=" + timeOfEvent +
-                '}';
-    }
+
 }

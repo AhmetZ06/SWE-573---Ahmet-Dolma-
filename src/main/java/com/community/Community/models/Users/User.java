@@ -46,7 +46,7 @@ public class User {
     private Profile profile;
 
     public User(long userID, String name, String surname, String email, String password, String username) {
-        userId = userID;
+        this.userId = userID;
         this.name = name;
         this.surname = surname;
         this.email = email;

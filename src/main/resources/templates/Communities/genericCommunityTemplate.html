@@ -62,7 +62,7 @@
             <div th:each="post : ${community.posts}">
                 <div class="info-box">
                     <h3 th:text="${post.title}">Post Title</h3>
-                    <p th:text="${post.content}">Post content here...</p>
+                    <p th:text="${post.contentData}">Post content here...</p>
                 </div>
             </div>
         </div>

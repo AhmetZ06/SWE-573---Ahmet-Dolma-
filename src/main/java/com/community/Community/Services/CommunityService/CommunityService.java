@@ -18,7 +18,6 @@ public class CommunityService implements ICommunityService{
 
     private  UserRepository userRepository;
 
-
     public CommunityService(CommunityRepository communityRepository,
                             UserRepository userRepository) {
         this.communityRepository = communityRepository;

@@ -22,7 +22,6 @@ public class Community_Create_Dto {
     public void setAdmin (User admin){
         this.kralid = admin.getUserId();
     }
-
     public String getName() {
         return name;
     }
