@@ -1,6 +1,7 @@
 package com.community.Community.models.Discussion;
 
 import com.community.Community.models.Posts.Post;
+import com.community.Community.models.Users.User;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -11,19 +12,20 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Discussion {
+public class Comments {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long discussionId;
+    private Long commentId;
+
+    private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "postId", nullable = false)
+    @JoinColumn(name = "postId", referencedColumnName = "postId")
     private Post post;
 
-    @Column(nullable = false)
-    private String title;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "userId", referencedColumnName = "userId")
+    private User user;
 
-    @Column(nullable = false)
-    private boolean isArchived;
 
 }

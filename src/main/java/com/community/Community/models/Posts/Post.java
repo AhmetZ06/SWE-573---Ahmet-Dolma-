@@ -1,15 +1,18 @@
 package com.community.Community.models.Posts;
 
-import com.community.Community.models.*;
-import com.community.Community.models.Discussion.Discussion;
+import com.community.Community.models.Community;
+import com.community.Community.models.Discussion.Comments;
 import com.community.Community.models.PostTemplates.Geolocation;
 import com.community.Community.models.Users.User;
 import jakarta.persistence.*;
 import lombok.*;
 
+import javax.xml.stream.events.Comment;
+import java.time.Instant;
 import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.Set;
+import java.util.List;
+
+import static jakarta.persistence.FetchType.LAZY;
 
 @Entity
 @Table(name = "posts")
@@ -24,14 +27,6 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long postId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "communityId", nullable = false)
-    private Community community;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "userId", nullable = false)
-    private User user;
-
     @Column(nullable = false)
     private String title;
 
@@ -39,7 +34,7 @@ public class Post {
     private String contentData;
 
     @Column
-    private LocalDateTime CreationDate;
+    private Instant CreationDate;
 
     @Column
     private LocalDateTime UpdateDate;
@@ -56,15 +51,23 @@ public class Post {
     @Column
     private int downvotes;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "templateId")
+
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "userId", referencedColumnName = "userId")
+    private User user;
+
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "communityId", referencedColumnName = "communityId")
+    private Community community;
+
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "templateId", referencedColumnName = "templateId")
     private PostTemplate template;
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Discussion> discussions;
+    @OneToMany(fetch = LAZY)
+    private List<Comments> Comments;
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Report> reports;
+
 
 
 }

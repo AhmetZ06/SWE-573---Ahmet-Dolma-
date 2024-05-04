@@ -17,5 +17,6 @@ public interface ICommunityService {
 
     Community getCommunityById(Long communityId);
 //    void setAdminbyDefault(long communityId);
+    public void addUserToCommunity(Long communityId, String username);
 
 }

@@ -1,5 +1,6 @@
-package com.community.Community.models.Users;
+package com.community.Community.models.Users.ex;
 
+import com.community.Community.models.Users.User;
 import jakarta.persistence.*;
 import lombok.*;
 

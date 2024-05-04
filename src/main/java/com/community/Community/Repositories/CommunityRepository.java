@@ -13,7 +13,7 @@ public interface CommunityRepository extends JpaRepository<Community, Long>{
 
     Community findByName(String name);
     Community findByCommunityId(long communityId);
-    Community findByKralid(Long userId);;
+    Community findByOwner(User user);
 
     List<Community> findByDescriptionContainingIgnoreCase(String description);
 

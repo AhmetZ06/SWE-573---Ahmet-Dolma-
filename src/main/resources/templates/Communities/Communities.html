@@ -50,9 +50,16 @@
         <tr th:each="community : ${listCommunities}">
             <td th:text="${community.name}">Community Name</td>
             <td th:text="${community.description}">Community Description</td>
-            <td th:class="${community.isPrivate} ? 'private-style' : 'public-style'" th:text="${community.isPrivate} ? 'Private' : 'Public'">Community Type</td>
+            <td th:class="${community.isPrivate} ? 'private-style' : 'public-style'"
+                th:text="${community.isPrivate} ? 'Private' : 'Public'">Community Type</td>
             <td>
-                <a th:href="@{'Communities/community/' + ${community.communityId}}" class="btn btn-primary">Enter</a>
+                <!-- Conditional form rendering based on community type -->
+                <form th:if="${!community.isPrivate}" th:action="@{'/Communities/join/' + ${community.communityId}}" method="post">
+                    <button type="submit" class="btn btn-primary">Join</button>
+                </form>
+                <form th:if="${community.isPrivate}" th:action="@{'/Communities/request-entry/' + ${community.communityId}}" method="post">
+                    <button type="submit" class="btn btn-secondary">Request Entry</button>
+                </form>
             </td>
         </tr>
         </tbody>

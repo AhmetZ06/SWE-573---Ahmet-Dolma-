@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -77,7 +78,7 @@ public class PostService implements IPostService{
 
         User user = userService.getAuthenticatedUser();
 
-        long originalid = user.getoriginalId(user.getUserId());
+        long originalid = user.getUserId();
 
         user.setUserId(originalid);
 
@@ -89,8 +90,8 @@ public class PostService implements IPostService{
         post.setCommunity(communityRepository.findByCommunityId(communityId));
 
 
-        LocalDateTime currentDateTime = LocalDateTime.now();
-        post.setCreationDate(currentDateTime);
+        Instant now = Instant.now();
+        post.setCreationDate(now);
 
 //        post.setTemplate(PostTemplateRepository.findById(postDto.getTemplateId()).
 //                orElseThrow(() -> new IllegalArgumentException

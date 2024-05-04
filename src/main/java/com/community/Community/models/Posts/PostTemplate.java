@@ -10,6 +10,8 @@ import java.util.Date;
 import java.util.Map;
 import java.util.Set;
 
+import static jakarta.persistence.FetchType.LAZY;
+
 @Entity
 @Table(name = "post_templates")
 @Getter
@@ -22,8 +24,8 @@ public class PostTemplate {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long templateId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "communityId", nullable = false)
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "communityId", referencedColumnName = "communityId")
     private Community community;
 
     @OneToMany(mappedBy = "template")

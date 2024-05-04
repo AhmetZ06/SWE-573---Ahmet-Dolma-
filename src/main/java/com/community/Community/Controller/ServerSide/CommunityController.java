@@ -10,7 +10,9 @@ import com.community.Community.models.Users.User;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -89,13 +91,19 @@ public class CommunityController {
 
         User currentUser = userService.getAuthenticatedUser();
 
-        boolean isKralid = currentUser.getUserId()== community.getKralid();
+        boolean isKralid = currentUser.getUserId()== community.getOwner().getUserId();
 
         model.addAttribute("isKralid", isKralid);
 
         return "Communities/genericCommunityTemplate";
     }
 
+    @PostMapping("/Communities/join/{communityId}")
+    public String joinCommunity(@PathVariable Long communityId,
+                                @AuthenticationPrincipal UserDetails currentUser) {
+        communityService.addUserToCommunity(communityId, currentUser.getUsername());
+        return "redirect:/Communities/community/{communityId}";
+    }
 
 
 }

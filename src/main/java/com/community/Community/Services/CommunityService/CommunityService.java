@@ -31,8 +31,9 @@ public class CommunityService implements ICommunityService{
         community.setName(communityDto.getName());
         community.setDescription(communityDto.getDescription());
         community.setIsPrivate(communityDto.getisPrivate());
-        community.setKralid(communityDto.getKralid());
+        community.setOwner(userRepository.findByUserId(communityDto.getKralid()));
         communityRepository.save(community);
+
     }
 
     @Override
@@ -82,9 +83,31 @@ public class CommunityService implements ICommunityService{
 
 
     @Override
+    public void addUserToCommunity(Long communityId, String username) {
+        Community community = communityRepository.findById(communityId).orElseThrow(() -> new IllegalArgumentException("Community not found"));
+        User user = userRepository.findByUsername(username);
+
+        if (community.getModerators().contains(user)) {
+            // Possibly log or handle the case where the user is already a moderator
+            return; // Simply return without adding the user
+        }
+        if (community.getUsers().contains(user)) {
+            // Possibly log or handle the case where the user is already added
+            return; // Simply return without adding the user again
+        }
+        if (community.getOwner() != null && community.getOwner().equals(user)) {
+            // Possibly log or handle the case where the user is the owner
+            return; // Simply return without adding the user
+        }
+        community.getUsers().add(user);
+        communityRepository.save(community);
+    }
+
+    @Override
     public Community getCommunityById(Long communityId) {
         return communityRepository.findById(communityId).orElse(null);
     }
+
 
 
 
