@@ -109,6 +109,9 @@ public class CommunityController {
 
         List<Post> posts = postRepository.findByCommunity(community);
 
+        model.addAttribute("privatecommunity", community.getIsPrivate());
+
+
 
         if (roles != null) {
             boolean isSubscribed = true;
@@ -117,15 +120,22 @@ public class CommunityController {
             model.addAttribute("isAdmin", roles.getRole().equals("ADMIN"));
             model.addAttribute("isModerator", roles.getRole().equals("MODERATOR"));
             model.addAttribute("isSubscribed", isSubscribed);
-            model.addAttribute("show_posts", showPosts);
+            model.addAttribute("posts", posts);
+            model.addAttribute("show_posts",true);
+
         } else {
             model.addAttribute("isMember", false);
             model.addAttribute("isAdmin", false);
             model.addAttribute("isModerator", false);
             model.addAttribute("isSubscribed", false);
-            model.addAttribute("show_posts", !community.isPrivate());
+            if (community.getIsPrivate()) {
+                model.addAttribute("posts", null);
+            } else {
+                model.addAttribute("posts", posts);
+                model.addAttribute("show_posts",true);
+            }
+
         }
-        model.addAttribute("posts", posts);
         return "Communities/genericCommunityTemplate";
     }
 

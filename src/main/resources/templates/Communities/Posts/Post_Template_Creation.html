@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Create Post</title>
+</head>
+<body>
+<form action="#" th:action="@{/createPost}" th:object="${post}" method="post">
+    <input type="text" th:field="*{title}" placeholder="Title" required /><br>
+    <textarea th:field="*{description}" placeholder="Description" required></textarea><br>
+    <div>
+        <input type="checkbox" name="addGeo" id="addGeo"/> <label for="addGeo">Add Geolocation</label><br>
+        <input type="checkbox" name="addEvent" id="addEvent"/> <label for="addEvent">Add Event Details</label><br>
+    </div>
+    <button type="submit">Create Post</button>
+</form>
+</body>
+</html>
