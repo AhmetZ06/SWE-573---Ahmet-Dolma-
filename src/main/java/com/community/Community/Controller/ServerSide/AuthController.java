@@ -1,14 +1,13 @@
 package com.community.Community.Controller.ServerSide;
 
+import com.community.Community.Services.UserServices.UserService;
 import com.community.Community.models.Users.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import com.community.Community.dto.UserDto;
-import com.community.Community.Services.UserServices.IUserService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
@@ -18,8 +17,8 @@ import java.util.List;
 @Controller
 public class AuthController {
 
-    private IUserService userService;
-    public AuthController(IUserService userService) {
+    private UserService userService;
+    public AuthController(UserService userService) {
         this.userService = userService;
     }
 

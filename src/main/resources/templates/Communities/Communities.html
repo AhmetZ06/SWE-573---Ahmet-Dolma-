@@ -2,68 +2,60 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
 <head>
     <meta charset="ISO-8859-1"/>
-    <link rel="stylesheet"
-          href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
-          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
-          crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/communities_css.css"> <!-- Make sure this path is correct -->
     <title>Communities</title>
-    <style>
-        body {
-            padding-top: 40px;
-        }
-        .container {
-            width: 90%;
-            margin: auto;
-        }
-        .private-style {
-            background-color: darkred;
-            color: white;
-            text-align: center;
-            padding: 5px;
-            border-radius: 5px;
-        }
-        .public-style {
-            background-color: green;
-            color: black;
-            text-align: center;
-            padding: 5px;
-            border-radius: 5px;
-        }
-        th, td {
-            text-align: center;
-        }
-    </style>
 </head>
 <body>
+<!--Navigation bar-->
+<div th:replace="fragments/navbar :: navbar"></div>
+
 <div class="container">
     <h1 class="text-center">Available Communities</h1>
-    <table class="table table-striped table-responsive-md">
-        <thead>
-        <tr>
-            <th>Community Name</th>
-            <th>Community Description</th>
-            <th>Community Type</th>
-            <th>Action</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="community : ${listCommunities}">
-            <td th:text="${community.name}">Community Name</td>
-            <td th:text="${community.description}">Community Description</td>
-            <td th:class="${community.isPrivate} ? 'private-style' : 'public-style'"
-                th:text="${community.isPrivate} ? 'Private' : 'Public'">Community Type</td>
-            <td>
-                <!-- Conditional form rendering based on community type -->
-                <form th:if="${!community.isPrivate}" th:action="@{'/Communities/join/' + ${community.communityId}}" method="post">
-                    <button type="submit" class="btn btn-primary">Join</button>
-                </form>
-                <form th:if="${community.isPrivate}" th:action="@{'/Communities/request-entry/' + ${community.communityId}}" method="post">
-                    <button type="submit" class="btn btn-secondary">Request Entry</button>
-                </form>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+    <div class="row">
+        <div class="col-md-9">
+            <table class="table table-striped table-responsive-md community-table">
+                <thead>
+                <tr>
+                    <th>Community Name</th>
+                    <th>Community Description</th>
+                    <th>Community Type</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="community : ${communities}">
+                    <td th:text="${community.name}">Community Name</td>
+                    <td th:text="${community.description}">Community Description</td>
+                    <td th:class="${community.isPrivate} ? 'private-style' : 'public-style'"
+                        th:text="${community.isPrivate} ? 'Private' : 'Public'">Community Type</td>
+                    <td>
+                        <form th:action="@{'/Communities/community/' + ${community.communityId}}" method="get">
+                            <button type="submit" class="btn btn-secondary">Enter</button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-3">
+            <div class="user-communities">
+                <h2>Your Communities</h2>
+                <div th:each="role : ${roles_for_a_user}" class="mb-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title" th:text="${role.community.name}">Community Name</h5>
+                            <p class="card-text" th:text="${role.role}">Role</p>
+                            <form th:action="@{'/Communities/community/' + ${role.community.getCommunityId()}}" method="get">
+                                <button type="submit" class="btn btn-primary">Enter</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 </body>
 </html>

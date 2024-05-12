@@ -4,9 +4,12 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Collection;
+import java.util.Set;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import static jakarta.persistence.FetchType.LAZY;
 
 
 @Entity
@@ -35,6 +38,9 @@ public class User implements UserDetails {
 
     @Column(nullable = false, unique = true)
     private String username;
+
+    @ManyToMany(fetch = LAZY)
+    private Set<Roles_In_Communities> rolesInCommunities;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

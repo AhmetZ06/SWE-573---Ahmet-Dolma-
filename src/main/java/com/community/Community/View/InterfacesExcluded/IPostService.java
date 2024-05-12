@@ -1,4 +1,4 @@
-package com.community.Community.Services.PostServices;
+package com.community.Community.Services.InterfacesExcluded;
 
 import com.community.Community.dto.PostDto;
 import com.community.Community.models.Posts.Post;

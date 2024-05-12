@@ -1,12 +1,8 @@
 package com.community.Community.Controller.ServerSide;
 
 import com.community.Community.Services.CommunityService.CommunityService;
-import com.community.Community.Services.CommunityService.ICommunityService;
-import com.community.Community.Services.PostServices.IPostService;
-import com.community.Community.Services.UserServices.CustomUserDetailsService;
+import com.community.Community.Services.PostServices.PostService;
 import com.community.Community.dto.PostDto;
-import com.community.Community.models.Posts.Post;
-import com.community.Community.models.Users.User;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,16 +10,14 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import java.util.Date;
-
 @Controller
 public class PostController {
 
-    private IPostService postService;
+    private PostService postService;
 
-    private ICommunityService communityService;
+    private CommunityService communityService;
 
-    public PostController(IPostService postService, ICommunityService communityService) {
+    public PostController(PostService postService, CommunityService communityService) {
         this.postService = postService;
         this.communityService = communityService;
     }
@@ -51,5 +45,7 @@ public class PostController {
 
         return "redirect:/Communities/community/" + communityId;
     }
+
+
 
 }

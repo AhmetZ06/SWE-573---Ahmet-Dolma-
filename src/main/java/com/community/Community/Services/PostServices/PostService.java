@@ -7,21 +7,16 @@ import com.community.Community.Repositories.UserRepository;
 import com.community.Community.Services.UserServices.CustomUserDetailsService;
 import com.community.Community.dto.PostDto;
 import com.community.Community.models.Posts.Post;
-import com.community.Community.models.Posts.PostTemplate;
 import com.community.Community.models.Users.User;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
 @Service
 @Transactional
-public class PostService implements IPostService{
+public class PostService{
 
     private  PostRepository postRepository;
     private CommunityRepository communityRepository;
@@ -43,22 +38,18 @@ public class PostService implements IPostService{
     }
 
 
-    @Override
     public Post createPost(Post post) {
         return postRepository.save(post);
     }
 
-    @Override
     public List<Post> getAllPosts() {
         return postRepository.findAll();
     }
 
-    @Override
     public Post getPostById(Long postId) {
         return postRepository.findById(postId).orElseThrow(() -> new IllegalArgumentException("Post not found: " + postId));
     }
 
-    @Override
     public Post updatePost(Post post) {
         if (post == null || post.getPostId() == null) {
             throw new IllegalArgumentException("Post ID cannot be null");
@@ -66,12 +57,10 @@ public class PostService implements IPostService{
         return postRepository.save(post);
     }
 
-    @Override
     public void deletePost(Long postId) {
         postRepository.deleteById(postId);
     }
 
-    @Override
     public void savePost(PostDto postDto, Long communityId) {
 
         Post post = new Post();

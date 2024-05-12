@@ -17,4 +17,10 @@ public interface CommunityRepository extends JpaRepository<Community, Long>{
 
     List<Community> findByDescriptionContainingIgnoreCase(String description);
 
+    int countMembersByCommunityId(Long communityId);
+
+    List<Community> findAllByOrderByNameAsc();
+
+
+
 }

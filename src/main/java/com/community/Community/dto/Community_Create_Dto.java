@@ -18,9 +18,13 @@ public class Community_Create_Dto {
     private String description;
     private boolean isPrivate;
     private long kralid;
+    private User admin;
 
-    public void setAdmin (User admin){
-        this.kralid = admin.getUserId();
+    public User getAdmin() {
+        return admin;
+    }
+    public void setAdmin(User admin) {
+        this.admin = admin;
     }
     public String getName() {
         return name;

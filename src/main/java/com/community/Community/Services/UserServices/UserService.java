@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class UserService implements IUserService {
+public class UserService{
 
     private UserRepository userRepository;
 
@@ -24,7 +24,6 @@ public class UserService implements IUserService {
     }
 
 
-    @Override
     public void saveUser(UserDto userDto) {
         System.out.println("Saving user: " + userDto.getEmail());
         User user = new User();
@@ -37,24 +36,20 @@ public class UserService implements IUserService {
         System.out.println("User saved");
     }
 
-    @Override
     public User findUserByEmail(String email) {
         return userRepository.findByEmail(email);
     }
 
-    @Override
     public User findUserByUsername(String username) {
         return userRepository.findByUsername(username);
     }
 
-    @Override
     public List<UserDto> findAllUsers() {
         List<User> users = userRepository.findAll();
         return users.stream()
                 .map((user) -> mapToUserDto(user))
                 .collect(Collectors.toList());
     }
-
     private UserDto mapToUserDto(User user){
         UserDto userDto = new UserDto();
         String[] str = user.getName().split(" ");
@@ -63,5 +58,6 @@ public class UserService implements IUserService {
         userDto.setEmail(user.getEmail());
         return userDto;
     }
+
 
 }

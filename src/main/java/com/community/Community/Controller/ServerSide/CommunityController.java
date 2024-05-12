@@ -1,46 +1,57 @@
 package com.community.Community.Controller.ServerSide;
 
-import com.community.Community.Services.CommunityService.ICommunityService;
+import com.community.Community.Repositories.PostRepository;
+import com.community.Community.Repositories.UserRepository;
+import com.community.Community.Services.CommunityService.CommunityService;
+import com.community.Community.Services.CommunityService.RolesService;
+import com.community.Community.Services.PostServices.PostService;
 import com.community.Community.Services.UserServices.CustomUserDetailsService;
-import com.community.Community.Services.UserServices.IUserService;
 import com.community.Community.dto.Community_Create_Dto;
-import com.community.Community.dto.UserDto;
+import com.community.Community.dto.Roles_Dto;
 import com.community.Community.models.Community;
+import com.community.Community.models.Posts.Post;
+import com.community.Community.models.Users.Roles_In_Communities;
 import com.community.Community.models.Users.User;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Controller
 public class CommunityController {
 
-    private ICommunityService communityService;
+    private CommunityService communityService;
 
     private CustomUserDetailsService userService;
 
-    public CommunityController(ICommunityService communityService, CustomUserDetailsService userService) {
+    private PostRepository postRepository;
+    private PostService postService;
+
+    private UserRepository userRepository;
+    private RolesService rolesService;
+
+    public CommunityController(CommunityService communityService,
+                               CustomUserDetailsService userService,
+                                PostRepository postRepository,
+                                PostService postService,
+                                UserRepository userRepository,
+                                RolesService rolesService) {
         this.communityService = communityService;
         this.userService = userService;
+        this.postRepository = postRepository;
+        this.postService = postService;
+        this.userRepository = userRepository;
+        this.rolesService = rolesService;
     }
 
     //Show communities
-    @GetMapping("/Communities")
-    public String showCommunities(Model model) {
-
-        model.addAttribute("listCommunities", communityService.getAllCommunities());
-
-        return "Communities/Communities";
-    }
 
 
     @GetMapping("/createCommunity")
@@ -56,8 +67,8 @@ public class CommunityController {
                                   Model model) {
 
         String communityName = community_create_dto.getName();
-
-        communityService.setAdminbyDefault(community_create_dto);
+        User user = userService.getAuthenticatedUser();
+        community_create_dto.setKralid(user.getUserId());
 
         if (communityName == null || communityName.isEmpty()) {
             result.rejectValue("name", "error.name", "Community name cannot be empty");
@@ -87,23 +98,79 @@ public class CommunityController {
     public String showCommunity(@PathVariable("communityId") Long communityId, Model model) {
 
         Community community = communityService.getCommunityById(communityId);
+        User currentUser = userService.getAuthenticatedUser();
         model.addAttribute("community", community);
 
-        User currentUser = userService.getAuthenticatedUser();
+        Roles_In_Communities roles = rolesService.getRoleByUserIdAndCommunityId(currentUser.getUserId(),    communityId);
 
         boolean isKralid = currentUser.getUserId()== community.getOwner().getUserId();
 
         model.addAttribute("isKralid", isKralid);
 
+        List<Post> posts = postRepository.findByCommunity(community);
+
+
+        if (roles != null) {
+            boolean isSubscribed = true;
+            boolean showPosts = true;
+            model.addAttribute("isMember", roles.getRole().equals("MEMBER"));
+            model.addAttribute("isAdmin", roles.getRole().equals("ADMIN"));
+            model.addAttribute("isModerator", roles.getRole().equals("MODERATOR"));
+            model.addAttribute("isSubscribed", isSubscribed);
+            model.addAttribute("show_posts", showPosts);
+        } else {
+            model.addAttribute("isMember", false);
+            model.addAttribute("isAdmin", false);
+            model.addAttribute("isModerator", false);
+            model.addAttribute("isSubscribed", false);
+            model.addAttribute("show_posts", !community.isPrivate());
+        }
+        model.addAttribute("posts", posts);
         return "Communities/genericCommunityTemplate";
     }
 
-    @PostMapping("/Communities/join/{communityId}")
-    public String joinCommunity(@PathVariable Long communityId,
-                                @AuthenticationPrincipal UserDetails currentUser) {
-        communityService.addUserToCommunity(communityId, currentUser.getUsername());
-        return "redirect:/Communities/community/{communityId}";
+
+    @GetMapping("/Communities")
+    public String showCommunities(Model model) {
+        List<Community> communities = communityService.getAllCommunitiesSorted();
+        model.addAttribute("communities", communities);
+
+        User currentUser = userService.getAuthenticatedUser();
+        List<Roles_In_Communities> rolesForUser = rolesService.getAllCommunitiesForAUser(currentUser);
+        model.addAttribute("roles_for_a_user", rolesForUser);
+
+        return "Communities/Communities";
     }
+
+
+    @PostMapping("/Communities/community/{communityId}/join")
+    public String joinCommunity(@PathVariable("communityId") Long communityId) {
+
+            Community community = communityService.getCommunityById(communityId);
+
+            User user = userService.getAuthenticatedUser();
+
+            rolesService.addMemberToUserInCommunity(community, user, "MEMBER");
+
+            return "redirect:/Communities/community/" + communityId;
+    }
+
+    @PostMapping("/Communities/community/{communityId}/leave")
+    public String leaveCommunity(@PathVariable("communityId") Long communityId) {
+
+        Community community = communityService.getCommunityById(communityId);
+
+        User user = userService.getAuthenticatedUser();
+
+        rolesService.removeMemberFromUserInCommunity(user,community);
+
+        return "redirect:/Communities/community/" + communityId;
+
+    }
+
+
+
+
 
 
 }

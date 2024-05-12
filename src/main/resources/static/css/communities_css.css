@@ -1,0 +1,58 @@
+/* General styles for padding and margins */
+.container {
+    width: 100%;
+    max-width: 1200px; /* Limit the max width */
+    margin: auto;
+    padding: 0 15px; /* Ensure there's some padding */
+}
+
+/* Styling for private and public community types */
+.private-style, .public-style {
+    padding: 5px;
+    border-radius: 5px;
+    text-align: center;
+    color: white;
+}
+
+.private-style {
+    background-color: darkred;
+}
+
+.public-style {
+    background-color: green;
+}
+
+/* Table styling for clarity and centering */
+th, td {
+    text-align: center;
+    vertical-align: middle;
+}
+
+/* Specific styles for the main community table */
+.community-table {
+    width: 100%; /* Full width of its container */
+    max-width: 1200000px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.community-table:hover {
+    box-shadow: 0 12px 24px rgba(0,0,0,0.2);
+}
+
+/* Styling for the user's communities list */
+.user-communities {
+    /*padding: 20px;*/
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.list-group-item {
+    display: flex;
+    justify-content: space-between; /* Space elements within the list item */
+    align-items: center;
+}
+
+.btn-sm {
+    padding: 0.25rem 0.5rem;
+}

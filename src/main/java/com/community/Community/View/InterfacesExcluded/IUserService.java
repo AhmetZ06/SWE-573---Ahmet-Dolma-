@@ -1,4 +1,4 @@
-package com.community.Community.Services.UserServices;
+package com.community.Community.Services.InterfacesExcluded;
 
 
 import com.community.Community.dto.UserDto;
