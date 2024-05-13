@@ -67,4 +67,9 @@ public class CommunityService{
         return communityRepository.findById(communityId).orElse(null);
     }
 
+    public List<Community> getCommunitiesByTitleContaining(String title) {
+        return communityRepository.findByNameContainingIgnoreCaseOrderByNameAsc(title);
+    }
+
+
 }

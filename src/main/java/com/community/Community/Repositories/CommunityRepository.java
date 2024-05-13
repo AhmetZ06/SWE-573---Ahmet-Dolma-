@@ -21,6 +21,8 @@ public interface CommunityRepository extends JpaRepository<Community, Long>{
 
     List<Community> findAllByOrderByNameAsc();
 
+    List<Community> findByNameContainingIgnoreCaseOrderByNameAsc(String title);
+
 
 
 }

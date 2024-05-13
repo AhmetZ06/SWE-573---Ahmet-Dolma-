@@ -9,6 +9,7 @@ import com.community.Community.Services.PostServices.PostService;
 import com.community.Community.Services.UserServices.CustomUserDetailsService;
 import com.community.Community.dto.PostDto;
 import com.community.Community.dto.PostTemplateDto;
+import com.community.Community.dto.Templated_Post_Dto;
 import com.community.Community.models.Community;
 import com.community.Community.models.Posts.PostTemplate;
 import com.community.Community.models.Users.Roles_In_Communities;
@@ -35,12 +36,12 @@ public class PostController {
     private PostTemplateRepository postTemplateRepository;
 
     public PostController(CommunityService communityService,
-                               CustomUserDetailsService userService,
-                               PostRepository postRepository,
-                               PostService postService,
-                               UserRepository userRepository,
-                               RolesService rolesService,
-                               PostTemplateRepository postTemplateRepository) {
+                          CustomUserDetailsService userService,
+                          PostRepository postRepository,
+                          PostService postService,
+                          UserRepository userRepository,
+                          RolesService rolesService,
+                          PostTemplateRepository postTemplateRepository) {
         this.communityService = communityService;
         this.userService = userService;
         this.postRepository = postRepository;
@@ -49,6 +50,7 @@ public class PostController {
         this.rolesService = rolesService;
         this.postTemplateRepository = postTemplateRepository;
     }
+
     @GetMapping("/createPost")
     public String showCreatePostForm(@RequestParam("communityId") Long communityId, Model model) {
 
@@ -103,15 +105,46 @@ public class PostController {
     @GetMapping("/choosePostTemplate")
     public String showPostTemplateSelection(@RequestParam("communityId") Long communityId, Model model,
                                             RedirectAttributes redirectAttrs
-                                            ) {
+    ) {
 
         Community com = communityService.getCommunityById(communityId);
-        List<PostTemplate> templates =postService.getAllPostTemplatesByCom(com);
+        List<PostTemplate> templates = postService.getAllPostTemplatesByCom(com);
         model.addAttribute("templates", templates);
         model.addAttribute("communityId", communityId);
         return "Communities/Posts/TemplateSelection";
     }
 
+    @GetMapping("/createPostWithTemplate")
+    public String showCreatePostForm(@RequestParam("communityId") Long communityId,
+                                     @RequestParam("templateId") Long templateId,
+                                     Model model) {
 
+        model.addAttribute("communityId", communityId);
+        model.addAttribute("templateId", templateId);
 
+        Templated_Post_Dto t_dto = new Templated_Post_Dto();
+        postService.MapPostTemplateToDto(t_dto, templateId);
+        model.addAttribute("t_dto", t_dto);
+
+        return "Communities/Posts/TemplatedPosts";
+
+    }
+
+    @PostMapping("/createPostWithTemplate/save")
+    public String submitPostWithTemplate(@Valid @ModelAttribute("post") PostDto postDto,
+                                         BindingResult result,
+                                         @RequestParam("communityId") Long communityId,
+                                         @RequestParam("templateId") Long templateId,
+                                         Model model) {
+
+        if (result.hasErrors()) {
+            model.addAttribute("communityId", communityId);
+            model.addAttribute("templateId", templateId);
+            return "Communities/Posts/TemplatedPosts";
+        }
+
+        postService.savePost(postDto, communityId);
+
+        return "redirect:/Communities/community/" + communityId;
+    }
 }

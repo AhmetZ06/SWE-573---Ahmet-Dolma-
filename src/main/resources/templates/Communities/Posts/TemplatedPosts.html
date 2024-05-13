@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>Create Post</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-4">
+    <h1>Create a New Post</h1>
+<!--    <form th:action="@{/createPost/save(communityId=${communityId}, templateId=${templateId})}" th:object="${t_dto}" method="post" enctype="multipart/form-data">-->
+<!--        &lt;!&ndash; Conditionally display title input &ndash;&gt;-->
+<!--        <div th:if="${t_dto.include_Title}" class="mb-3">-->
+<!--            <label for="title" class="form-label">Title:</label>-->
+<!--            <input type="text" th:field="*{title}" class="form-control" id="title" placeholder="Enter title" required>-->
+<!--        </div>-->
+
+<!--        &lt;!&ndash; Conditionally display content data input &ndash;&gt;-->
+<!--        <div th:if="${t_dto.include_ContentData}" class="mb-3">-->
+<!--            <label for="content" class="form-label">Content:</label>-->
+<!--            <textarea th:field="*{contentData}" class="form-control" id="content" placeholder="Enter content" required></textarea>-->
+<!--        </div>-->
+
+        <!-- Conditionally display geolocation input -->
+<!--        <div th:if="${t_dto.include_Geolocation}" class="mb-3">-->
+<!--            <label for="geolocation" class="form-label">Geolocation:</label>-->
+<!--            <input type="text" th:field="*{geolocation.address}" class="form-control" id="geolocation" placeholder="Enter geolocation">-->
+<!--        </div>-->
+
+        <!-- Conditionally display event details within a card -->
+<!--        <div th:if="${t_dto.include_Event}" class="card mb-3">-->
+<!--            <div class="card-header">-->
+<!--                Event Details-->
+<!--            </div>-->
+<!--            <div class="card-body">-->
+<!--                <div class="mb-3">-->
+<!--                    <label for="eventTitle" class="form-label">Event Title:</label>-->
+<!--                    <input type="text" th:field="*{event.eventTitle}" class="form-control" id="eventTitle" placeholder="Enter event title">-->
+<!--                </div>-->
+<!--                <div class="mb-3">-->
+<!--                    <label for="eventDescription" class="form-label">Event Description:</label>-->
+<!--                    <textarea th:field="*{event.eventDescription}" class="form-control" id="eventDescription" placeholder="Describe the event"></textarea>-->
+<!--                </div>-->
+<!--                <div class="mb-3">-->
+<!--                    <label for="eventDate" class="form-label">Event Date:</label>-->
+<!--                    <input type="date" th:field="*{event.eventDate}" class="form-control" id="eventDate">-->
+<!--                </div>-->
+<!--                <div class="mb-3">-->
+<!--                    <label for="eventTime" class="form-label">Event Time:</label>-->
+<!--                    <input type="time" th:field="*{event.eventTime}" class="form-control" id="eventTime">-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+
+
+        <!-- Conditionally display pool options directly -->
+<!--        <div th:if="${t_dto.include_Pool}" class="card mb-3">-->
+<!--            <div class="card-header">-->
+<!--                Pool Options-->
+<!--            </div>-->
+<!--            <div class="card-body">-->
+<!--                &lt;!&ndash; Static pool options &ndash;&gt;-->
+<!--                <div class="mb-3">-->
+<!--                    <label for="option1" class="form-label">Option 1:</label>-->
+<!--                    <input type="text" th:field="*{option1}" class="form-control" id="option1" placeholder="Enter option 1">-->
+<!--                </div>-->
+<!--                <div class="mb-3">-->
+<!--                    <label for="option2" class="form-label">Option 2:</label>-->
+<!--                    <input type="text" th:field="*{option2}" class="form-control" id="option2" placeholder="Enter option 2">-->
+<!--                </div>-->
+
+<!--            </div>-->
+<!--        </div>-->
+
+
+
+        <button type="submit" class="btn btn-primary">Create Post</button>
+    </form>
+</div>

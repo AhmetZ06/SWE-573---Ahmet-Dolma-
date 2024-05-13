@@ -10,4 +10,6 @@ import java.util.List;
 public interface PostTemplateRepository extends JpaRepository<PostTemplate, Long> {
 
     List<PostTemplate> findPostTemplateByCommunity(Community community);
+
+    PostTemplate findPostTemplateByTemplateId(Long postTemplateId);
 }

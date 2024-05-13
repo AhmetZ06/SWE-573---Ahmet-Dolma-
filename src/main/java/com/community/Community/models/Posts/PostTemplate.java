@@ -52,7 +52,8 @@ public class PostTemplate {
     @Column
     private boolean include_Upvotes = false;
 
-    @Column boolean include_Downvotes = false;
+    @Column
+    private boolean include_Downvotes = false;
 
     @Column
     private boolean include_Event = false;

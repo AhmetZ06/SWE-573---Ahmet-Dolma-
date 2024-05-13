@@ -1,0 +1,47 @@
+
+body {
+    padding: 20px;
+    background-color: #f8f9fa;
+}
+#myVideo {
+    position: fixed; /* Fixed position to cover all the screen */
+    right: 0;
+    bottom: 0;
+    min-width: 100%;
+    min-height: 100%;
+    z-index: -1; /* Place the video under the text and other content */
+}
+
+.container {
+    position: relative; /* Ensures content is positioned relative to the viewport */
+    z-index: 1; /* Higher than the video background */
+    padding-top: 100px; /* Adjust as necessary */
+}
+
+.header {
+    margin-bottom: 30px;
+    text-align: center;
+}
+.buttons {
+    text-align: center;
+    margin-top: 30px;
+}
+.button-link {
+    margin: 10px;
+    display: inline-block;
+}
+.btn-custom {
+    padding: 10px 20px;
+    font-size: 16px;
+    transition: background-color 0.3s, border-color 0.3s, box-shadow 0.3s;
+}
+.btn-custom:hover {
+    background-color: #0062cc;
+    border-color: #005cbf;
+    box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
+}
+.welcome-message {
+    font-size: 18px;
+    margin-bottom: 20px;
+    color: #6c757d;
+}

@@ -41,7 +41,7 @@
                         <li th:if="${template.include_Event}">Includes Event</li>
                         <li th:if="${template.include_Pool}">Includes Pool</li>
                     </ul>
-                    <a th:href="@{/createPost(communityId=${communityId}, templateId=${template.templateId})}" class="btn btn-success">Use This Template</a>
+                    <a th:href="@{/createPostWithTemplate(communityId=${communityId}, templateId=${template.templateId})}" class="btn btn-success">Use This Template</a>
                 </div>
             </div>
         </div>

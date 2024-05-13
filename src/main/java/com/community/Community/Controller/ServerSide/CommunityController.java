@@ -178,6 +178,15 @@ public class CommunityController {
 
     }
 
+    @GetMapping("/searchCommunity")
+    public String showsearchedCommunities(Model model,
+                                          @RequestParam(value = "writing", required = true) String writing)
+    {
+        List<Community> communities = communityService.getCommunitiesByTitleContaining(writing);
+        model.addAttribute("communities", communities);
+
+        return "Communities/SearchedCommunities";
+    }
 
 
 

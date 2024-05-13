@@ -7,6 +7,7 @@ import com.community.Community.Repositories.UserRepository;
 import com.community.Community.Services.UserServices.CustomUserDetailsService;
 import com.community.Community.dto.PostDto;
 import com.community.Community.dto.PostTemplateDto;
+import com.community.Community.dto.Templated_Post_Dto;
 import com.community.Community.models.Community;
 import com.community.Community.models.Posts.Post;
 import com.community.Community.models.Posts.PostTemplate;
@@ -110,6 +111,25 @@ public class PostService{
 
     public List<PostTemplate> getAllPostTemplatesByCom(Community community) {
         return PostTemplateRepository.findPostTemplateByCommunity(community);
+    }
+
+
+
+
+    public void MapPostTemplateToDto(Templated_Post_Dto t_dto, long templateId) {
+        PostTemplate postTemplate = PostTemplateRepository.findPostTemplateByTemplateId(templateId);
+
+        t_dto.setInclude_Pool(postTemplate.isInclude_Pool());
+        t_dto.setInclude_Geolocation(postTemplate.isInclude_Geolocation());
+        t_dto.setInclude_Event(postTemplate.isInclude_Event());
+        t_dto.setInclude_Discussion(postTemplate.isInclude_Discussion());
+        t_dto.setInclude_Report(postTemplate.isInclude_Report());
+        t_dto.setInclude_Upvotes(postTemplate.isInclude_Upvotes());
+        t_dto.setInclude_Downvotes(postTemplate.isInclude_Downvotes());
+        t_dto.setInclude_Image(postTemplate.isInclude_Image());
+        t_dto.setInclude_ContentData(postTemplate.isInclude_ContentData());
+        t_dto.setInclude_Title(postTemplate.isInclude_title());
+
     }
 
 
