@@ -2,6 +2,7 @@ package com.community.Community.models.Posts;
 
 import com.community.Community.models.Community;
 import com.community.Community.models.Discussion.Comments;
+import com.community.Community.models.PostTemplates.Events;
 import com.community.Community.models.PostTemplates.Geolocation;
 import com.community.Community.models.Users.User;
 import jakarta.persistence.*;
@@ -42,7 +43,7 @@ public class Post {
     @Column
     private String image;
 
-    @Column
+    @Embedded
     private Geolocation geolocation;
 
     @Column
@@ -50,6 +51,9 @@ public class Post {
 
     @Column
     private int downvotes;
+
+    @Embedded
+    private Events event;
 
 
     @ManyToOne(fetch = LAZY)

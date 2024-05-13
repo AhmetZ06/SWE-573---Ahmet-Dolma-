@@ -6,7 +6,10 @@ import com.community.Community.Repositories.PostTemplateRepository;
 import com.community.Community.Repositories.UserRepository;
 import com.community.Community.Services.UserServices.CustomUserDetailsService;
 import com.community.Community.dto.PostDto;
+import com.community.Community.dto.PostTemplateDto;
+import com.community.Community.models.Community;
 import com.community.Community.models.Posts.Post;
+import com.community.Community.models.Posts.PostTemplate;
 import com.community.Community.models.Users.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -91,6 +94,25 @@ public class PostService{
         System.out.println("Post saved");
 
     }
+
+    public PostTemplate convertDtoToPostTemplate(PostTemplateDto dto) {
+        PostTemplate postTemplate = new PostTemplate();
+        postTemplate.setInclude_Pool(dto.isInclude_Pool());
+        postTemplate.setInclude_Geolocation(dto.isInclude_Geolocation());
+        postTemplate.setInclude_Event(dto.isInclude_Event());
+        return postTemplate;
+    }
+
+
+    public PostTemplate getPostTemplateById(Long templateId) {
+        return PostTemplateRepository.findById(templateId).orElseThrow(() -> new IllegalArgumentException("Template not found: " + templateId));
+    }
+
+    public List<PostTemplate> getAllPostTemplatesByCom(Community community) {
+        return PostTemplateRepository.findPostTemplateByCommunity(community);
+    }
+
+
 
 
 }

@@ -18,9 +18,6 @@ public class PostDto {
     private Long templateId;
     private Long communityId;
     private String contentData;
-    private boolean image_ok;
-    private boolean geolocation_ok;
-    private boolean discussion_ok;
     private User user;
     private LocalDateTime CreationDate;
     private LocalDateTime UpdateDate;

@@ -77,7 +77,7 @@
 
                 <!-- Button for Members, Admins, or Moderators to create posts -->
                 <a th:if="${isMember || isAdmin || isModerator}"
-                   th:href="@{/createPost(communityId=${community.communityId})}"
+                   th:href="@{/choosePostTemplate(communityId=${community.communityId})}"
                    class="btn btn-success">Create Post</a>
             </div>
 

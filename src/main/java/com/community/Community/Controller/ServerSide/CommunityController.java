@@ -111,7 +111,7 @@ public class CommunityController {
 
         model.addAttribute("privatecommunity", community.getIsPrivate());
 
-
+        model.addAttribute("communityId", communityId);
 
         if (roles != null) {
             boolean isSubscribed = true;
@@ -136,7 +136,7 @@ public class CommunityController {
             }
 
         }
-        return "Communities/genericCommunityTemplate";
+        return "Communities/genericCommunityTemplate2";
     }
 
 
@@ -177,6 +177,8 @@ public class CommunityController {
         return "redirect:/Communities/community/" + communityId;
 
     }
+
+
 
 
 
