@@ -5,7 +5,10 @@ import com.community.Community.Repositories.PostRepository;
 import com.community.Community.Repositories.PostTemplateRepository;
 import com.community.Community.Repositories.UserRepository;
 import com.community.Community.Services.CommunityService.CommunityService;
+import com.community.Community.models.Posts.PostTemplate;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class PostTemplateService {
@@ -30,6 +33,14 @@ public class PostTemplateService {
         this.userRepository = userRepository;
         this.postTemplateRepository = postTemplateRepository;
 
+    }
+
+    public List<PostTemplate> getAllPostTemplates() {
+        return postTemplateRepository.findAll();
+    }
+
+    public PostTemplate savePostTemplate(PostTemplate postTemplate) {
+        return postTemplateRepository.save(postTemplate);
     }
 
 

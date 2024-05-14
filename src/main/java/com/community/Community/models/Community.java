@@ -1,7 +1,6 @@
 package com.community.Community.models;
 
 import com.community.Community.models.Posts.*;
-import com.community.Community.models.PostTemplates.*;
 import com.community.Community.models.Users.Roles_In_Communities;
 import com.community.Community.models.Users.User;
 import jakarta.persistence.*;
@@ -65,9 +64,6 @@ public class Community {
 
     @OneToMany(fetch = LAZY)
     private Set<Post> posts;
-
-    @OneToMany(fetch = LAZY)
-    private Set<PostTemplate> templates;
 
     @ManyToMany(fetch = LAZY)
     private Set<Roles_In_Communities> rolesInCommunities;

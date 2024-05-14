@@ -2,9 +2,11 @@
 <module version="4">
   <component name="AdditionalModuleElements">
     <content url="file://$MODULE_DIR$" dumb="true">
+      <sourceFolder url="file://$MODULE_DIR$" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/src/main/java/com/community/Community/Controller/API" />
       <excludeFolder url="file://$MODULE_DIR$/src/main/java/com/community/Community/models/Users/ex" />
       <excludeFolder url="file://$MODULE_DIR$/src/main/java/com/community/Community/View/InterfacesExcluded" />
+      <excludeFolder url="file://$MODULE_DIR$/src/main/java/com/community/Community/models/ExcludedOldFiles" />
     </content>
   </component>
 </module>

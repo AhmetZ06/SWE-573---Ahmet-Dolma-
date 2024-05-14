@@ -5,6 +5,8 @@ import com.community.Community.models.Users.User;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "discussions")
 @Getter
@@ -19,6 +21,10 @@ public class Comments {
 
     private String content;
 
+    private LocalDateTime commentDate;
+
+    private LocalDateTime lastModified;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "postId", referencedColumnName = "postId")
     private Post post;
@@ -26,6 +32,7 @@ public class Comments {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId", referencedColumnName = "userId")
     private User user;
+
 
 
 }

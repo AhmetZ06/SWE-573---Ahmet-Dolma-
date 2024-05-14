@@ -2,21 +2,19 @@ package com.community.Community.models.Posts;
 
 import com.community.Community.models.Community;
 import com.community.Community.models.Discussion.Comments;
-import com.community.Community.models.PostTemplates.Events;
-import com.community.Community.models.PostTemplates.Geolocation;
+import com.community.Community.models.Posts.PostFieldValue;
 import com.community.Community.models.Users.User;
 import jakarta.persistence.*;
 import lombok.*;
 
-import javax.xml.stream.events.Comment;
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
-import static jakarta.persistence.FetchType.LAZY;
+import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Entity
-@Table(name = "posts")
+@Table(name = "posts_revised")
 @Getter
 @Setter
 @Builder
@@ -25,53 +23,39 @@ import static jakarta.persistence.FetchType.LAZY;
 public class Post {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long postId;
+    @GeneratedValue(strategy = IDENTITY)
+    private Long id;
 
     @Column(nullable = false)
     private String title;
 
     @Column(nullable = false)
-    private String contentData;
+    private String description;
 
     @Column
-    private Instant CreationDate;
+    private LocalDateTime creationDate;
 
     @Column
-    private LocalDateTime UpdateDate;
+    private LocalDateTime lastModifiedDate;
 
-    @Column
-    private String image;
-
-    @Embedded
-    private Geolocation geolocation;
-
-    @Column
-    private int upvotes;
-
-    @Column
-    private int downvotes;
-
-    @Embedded
-    private Events event;
-
-
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "userId", referencedColumnName = "userId")
-    private User user;
-
-    @ManyToOne(fetch = LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "communityId", referencedColumnName = "communityId")
     private Community community;
 
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "templateId", referencedColumnName = "templateId")
-    private PostTemplate template;
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Comments> comments;
 
-    @OneToMany(fetch = LAZY)
-    private List<Comments> Comments;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "userId", referencedColumnName = "userId")
+    private User user;
 
+    @OneToMany(fetch = FetchType.LAZY)
+    private Set<User> upvoters;
 
+    @OneToMany(fetch = FetchType.LAZY)
+    private Set<User> downvoters;
 
-
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "postId")
+    private List<PostFieldValue> fieldValues;
 }

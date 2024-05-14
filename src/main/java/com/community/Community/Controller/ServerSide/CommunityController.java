@@ -7,7 +7,6 @@ import com.community.Community.Services.CommunityService.RolesService;
 import com.community.Community.Services.PostServices.PostService;
 import com.community.Community.Services.UserServices.CustomUserDetailsService;
 import com.community.Community.dto.Community_Create_Dto;
-import com.community.Community.dto.Roles_Dto;
 import com.community.Community.models.Community;
 import com.community.Community.models.Posts.Post;
 import com.community.Community.models.Users.Roles_In_Communities;
@@ -19,10 +18,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 @Controller
 public class CommunityController {
@@ -50,9 +45,6 @@ public class CommunityController {
         this.userRepository = userRepository;
         this.rolesService = rolesService;
     }
-
-    //Show communities
-
 
     @GetMapping("/createCommunity")
     public String showCreateCommunityForm(Model model) {

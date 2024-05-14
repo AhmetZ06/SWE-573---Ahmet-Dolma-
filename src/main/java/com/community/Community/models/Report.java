@@ -1,9 +1,9 @@
 package com.community.Community.models;
 
+import com.community.Community.models.Posts.Post;
 import com.community.Community.models.Users.User;
 import jakarta.persistence.*;
 import lombok.*;
-import com.community.Community.models.Posts.Post;
 
 @Entity
 @Table(name = "reports")

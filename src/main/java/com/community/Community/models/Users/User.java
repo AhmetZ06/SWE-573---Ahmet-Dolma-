@@ -8,6 +8,8 @@ import java.util.Set;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import com.community.Community.models.Posts.Post;
+import com.community.Community.models.Discussion.Comments;
 
 import static jakarta.persistence.FetchType.LAZY;
 
@@ -41,6 +43,18 @@ public class User implements UserDetails {
 
     @ManyToMany(fetch = LAZY)
     private Set<Roles_In_Communities> rolesInCommunities;
+
+    @OneToMany(fetch = LAZY)
+    private Set<User> followers;
+
+    @OneToMany(fetch = LAZY)
+    private Set<User> following;
+
+    @OneToMany(fetch = LAZY)
+    private Set<Post> posts;
+
+    @OneToMany(fetch = LAZY)
+    private Set<Comments> comments;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
