@@ -8,22 +8,22 @@ import com.community.Community.Services.CommunityService.RolesService;
 import com.community.Community.Services.PostServices.PostService;
 import com.community.Community.Services.PostServices.PostTemplateService;
 import com.community.Community.Services.UserServices.CustomUserDetailsService;
-import com.community.Community.dto.PostDto;
-import com.community.Community.models.Community;
 import com.community.Community.models.Posts.Post;
 import com.community.Community.models.Posts.PostTemplate;
+import com.community.Community.models.Posts.PostFieldValue;
 import com.community.Community.models.Users.User;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.annotation.PostMapping;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-@RequestMapping("/posts")
+@RequestMapping("/communities/{communityId}/posts")
 public class PostController {
 
     private CommunityService communityService;
@@ -53,28 +53,36 @@ public class PostController {
         this.postTemplateService = postTemplateService;
     }
 
-//    @GetMapping("/create")
-//    public String showCreatePostForm(Model model, @RequestParam Long communityId) {
-//        Community community = communityService.getCommunityById(communityId);
-//        User user = userService.getAuthenticatedUser();
-//        model.addAttribute("post", new Post());
-//        model.addAttribute("templates", postTemplateService.getAllTemplates());
-//        return "create-post";
-//    }
-//
-//    @PostMapping("/create")
-//    public String createPost(@Valid @ModelAttribute Post post, BindingResult result, @RequestParam Long templateId, Model model) {
-//        if (result.hasErrors()) {
-//            model.addAttribute("templates", postTemplateService.getAllTemplates());
-//            return "create-post";
-//        }
-//        postService.createPostWithTemplate(post, templateId);
-//        return "redirect:/posts";
-//    }
-//
-//    @GetMapping
-//    public String viewPosts(Model model) {
-//        model.addAttribute("posts", postService.getAllPosts());
-//        return "view-posts";
-//    }
+    @GetMapping("/create/{templateId}")
+    public String showCreatePostForm(@PathVariable("templateId") Long templateId,
+                                     @PathVariable("communityId") Long communityId,
+                                     Model model) {
+        PostTemplate postTemplate = postTemplateService.getPostTemplateById(templateId);
+        Post post = new Post();
+        post.setPostTemplate(postTemplate);
+        post.setFieldValues(new ArrayList<>()); // Initialize field values
+        model.addAttribute("post", post);
+        model.addAttribute("template", postTemplate);
+        model.addAttribute("communityId", communityId);
+        return "create-post";
+    }
+
+    @PostMapping("/create")
+    public String createPost(@Valid @ModelAttribute Post post,
+                             BindingResult result,
+                             @PathVariable("communityId") Long communityId,
+                             Model model) {
+        if (result.hasErrors()) {
+            PostTemplate postTemplate = post.getPostTemplate();
+            model.addAttribute("template", postTemplate);
+            model.addAttribute("communityId", communityId);
+            return "create-post";
+        }
+
+        User user = userService.getAuthenticatedUser();
+        post.setUser(user);
+        postService.savePost(post);
+        return "redirect:/communities/" + communityId + "/posts";
+    }
 }
+

@@ -1,9 +1,7 @@
 package com.community.Community.models.Posts;
 
-import com.community.Community.enums.FieldType;
 import jakarta.persistence.*;
 import lombok.*;
-import com.community.Community.models.Posts.*;
 
 @Entity
 @Table(name = "custom_fields")
@@ -21,11 +19,10 @@ public class CustomField {
     @Column(nullable = false)
     private String fieldName;
 
-    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private FieldType fieldType;
+    private String fieldType;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "templateId", referencedColumnName = "templateId")
+    @JoinColumn(name = "templateId", referencedColumnName = "templateId", nullable = false)
     private PostTemplate postTemplate;
 }

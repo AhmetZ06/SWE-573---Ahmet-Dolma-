@@ -3,10 +3,7 @@ package com.community.Community.Services.CommunityService;
 import com.community.Community.Repositories.CommunityRepository;
 import com.community.Community.dto.Community_Create_Dto;
 import com.community.Community.models.Community;
-import com.community.Community.models.Users.Roles_In_Communities;
 import com.community.Community.models.Users.User;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import com.community.Community.Repositories.UserRepository;
 

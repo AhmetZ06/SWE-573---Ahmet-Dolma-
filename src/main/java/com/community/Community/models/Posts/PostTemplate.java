@@ -1,13 +1,10 @@
 package com.community.Community.models.Posts;
 
 import com.community.Community.models.Community;
-import com.community.Community.models.Posts.*;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.List;
-
-import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Entity
 @Table(name = "post_templates")
@@ -19,7 +16,7 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 public class PostTemplate {
 
     @Id
-    @GeneratedValue(strategy = IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long templateId;
 
     @Column(nullable = false)
@@ -28,10 +25,10 @@ public class PostTemplate {
     @Column(nullable = false)
     private String description;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "postTemplate")
-    private List<CustomField> fields;
-
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "communityId", referencedColumnName = "communityId")
+    @JoinColumn(name = "communityId", referencedColumnName = "communityId", nullable = false)
     private Community community;
+
+    @OneToMany(mappedBy = "postTemplate", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CustomField> fields;
 }

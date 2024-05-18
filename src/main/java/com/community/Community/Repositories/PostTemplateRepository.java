@@ -1,6 +1,7 @@
 package com.community.Community.Repositories;
 
 import com.community.Community.models.Community;
+import com.community.Community.models.Posts.Post;
 import com.community.Community.models.Posts.PostTemplate;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -11,4 +12,5 @@ public interface PostTemplateRepository extends JpaRepository<PostTemplate, Long
     List<PostTemplate> findPostTemplateByCommunity(Community community);
 
     PostTemplate findPostTemplateByTemplateId(Long postTemplateId);
+
 }

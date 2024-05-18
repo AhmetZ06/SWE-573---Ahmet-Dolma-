@@ -14,17 +14,16 @@ public class PostFieldValue {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long postfieldvalueId;
+
+    @Column(nullable = false)
+    private String fieldValue;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "postId", referencedColumnName = "id")
+    @JoinColumn(name = "postId", referencedColumnName = "postId", nullable = false)
     private Post post;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "customFieldId", referencedColumnName = "customFieldId")
+    @JoinColumn(name = "customFieldId", referencedColumnName = "customFieldId", nullable = false)
     private CustomField customField;
-
-    @Column(nullable = false)
-    private String value;
-
 }

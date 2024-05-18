@@ -72,7 +72,7 @@
             <div class="mb-3">
                 <!-- Button for Admins or Moderators to create post templates -->
                 <a th:if="${isAdmin || isModerator}"
-                   th:href="@{/addPostTemplate(communityId=${community.communityId})}"
+                   th:href="@{/communities/{communityId}/post-templates/create(communityId=${community.communityId})}"
                    class="btn btn-success">Create Post Template</a>
 
                 <!-- Button for Members, Admins, or Moderators to create posts -->

@@ -2,19 +2,41 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Create Post Template</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/posttemplate.css}">
+    <script type="text/javascript" th:src="@{/js/post_template.js}"></script>
 </head>
 <body>
 <h1>Create Post Template</h1>
-<form action="#" th:action="@{/post-templates/create}" th:object="${postTemplate}" method="post">
+<form action="#" th:action="@{|/communities/${communityId}/post-templates/create|}" th:object="${postTemplate}" method="post">
     <label for="title">Title:</label>
     <input type="text" id="title" th:field="*{title}" required>
-    <div th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></div>
-    <br>
+    <div th:if="${#fields.hasErrors('title')}" th:errors="*{title}" class="error"></div>
+
     <label for="description">Description:</label>
     <input type="text" id="description" th:field="*{description}" required>
-    <div th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
-    <br>
-    <button type="submit">Create Template</button>
+    <div th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="error"></div>
+
+    <div id="fields" th:object="${postTemplate}">
+        <div th:each="field, iterStat : ${postTemplate.fields}" class="field-container">
+            <label th:for="*{fields[__${iterStat.index}__].fieldName}">Field Name:</label>
+            <input type="text" th:field="*{fields[__${iterStat.index}__].fieldName}" required>
+            <label th:for="*{fields[__${iterStat.index}__].fieldType}">Field Type:</label>
+            <select th:field="*{fields[__${iterStat.index}__].fieldType}" required>
+                <option value="GEOLOCATION">Geolocation</option>
+                <option value="IMAGE">Image</option>
+                <option value="VIDEO">Video</option>
+                <option value="DATE">Date</option>
+                <option value="STRING">String</option>
+                <option value="INTEGER">Integer</option>
+                <option value="DOUBLE">Double</option>
+            </select>
+        </div>
+    </div>
+
+    <input type="hidden" th:field="*{community.communityId}" th:value="${communityId}">
+
+    <button type="button" class="add-field-btn" onclick="addField()">Add Field</button>
+    <button type="submit" class="submit-btn">Create Template</button>
 </form>
 </body>
 </html>

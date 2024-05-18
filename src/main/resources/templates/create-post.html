@@ -2,23 +2,31 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Create Post</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/posttemplate.css">
+    <script type="text/javascript" src="/static/js/post_template.js"></script>
 </head>
 <body>
 <h1>Create Post</h1>
-<form action="#" th:action="@{/posts/create}" th:object="${post}" method="post">
+<form action="#" th:action="@{/communities/{communityId}/posts/create}" th:object="${post}" method="post">
     <label for="title">Title:</label>
     <input type="text" id="title" th:field="*{title}" required>
-    <div th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></div>
-    <br>
+    <div th:if="${#fields.hasErrors('title')}" th:errors="*{title}" class="error"></div>
+
     <label for="description">Description:</label>
     <input type="text" id="description" th:field="*{description}" required>
-    <div th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
-    <br>
-    <label for="template">Template:</label>
-    <select id="template" th:field="*{templateId}">
-        <option th:each="template : ${templates}" th:value="${template.templateId}" th:text="${template.title}"></option>
-    </select><br>
-    <button type="submit">Create Post</button>
+    <div th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="error"></div>
+
+    <div id="fields" th:object="${post}">
+        <div th:each="field, iterStat : ${template.fields}" class="field-container">
+            <label th:for="*{fieldValues[__${iterStat.index}__].fieldValue}" th:text="${field.fieldName}">Field Name:</label>
+            <input type="text" th:field="*{fieldValues[__${iterStat.index}__].fieldValue}" required>
+        </div>
+    </div>
+
+    <input type="hidden" th:field="*{postTemplate.id}" th:value="${template.id}">
+    <input type="hidden" th:field="*{community.communityId}" th:value="${communityId}">
+
+    <button type="submit" class="submit-btn">Create Post</button>
 </form>
 </body>
 </html>
