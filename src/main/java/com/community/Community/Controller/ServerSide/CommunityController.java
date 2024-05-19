@@ -4,6 +4,7 @@ import com.community.Community.Repositories.PostRepository;
 import com.community.Community.Repositories.UserRepository;
 import com.community.Community.Services.CommunityService.CommunityService;
 import com.community.Community.Services.CommunityService.RolesService;
+import com.community.Community.Services.FileUploadService;
 import com.community.Community.Services.PostServices.PostService;
 import com.community.Community.Services.PostServices.PostTemplateService;
 import com.community.Community.Services.UserServices.CustomUserDetailsService;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
@@ -35,6 +37,7 @@ public class CommunityController {
     private RolesService rolesService;
 
     private PostTemplateService postTemplateService;
+    private FileUploadService fileUploadService;
 
 
     public CommunityController(CommunityService communityService,
@@ -43,7 +46,8 @@ public class CommunityController {
                                 PostService postService,
                                 UserRepository userRepository,
                                 RolesService rolesService,
-                                PostTemplateService postTemplateService) {
+                                PostTemplateService postTemplateService,
+                                FileUploadService fileUploadService) {
         this.communityService = communityService;
         this.userService = userService;
         this.postRepository = postRepository;
@@ -51,6 +55,7 @@ public class CommunityController {
         this.userRepository = userRepository;
         this.rolesService = rolesService;
         this.postTemplateService = postTemplateService;
+        this.fileUploadService = fileUploadService;
 
     }
 
@@ -105,6 +110,8 @@ public class CommunityController {
         Community community = communityService.getCommunityById(communityId);
         User currentUser = userService.getAuthenticatedUser();
         model.addAttribute("community", community);
+        model.addAttribute("currentUser", currentUser);
+        model.addAttribute("userId", currentUser.getUserId());
 
         Roles_In_Communities roles = rolesService.getRoleByUserIdAndCommunityId(currentUser.getUserId(),    communityId);
 
@@ -147,10 +154,16 @@ public class CommunityController {
 
     @GetMapping("/Communities")
     public String showCommunities(Model model) {
+
+        User currentUser = userService.getAuthenticatedUser();
+
+        model.addAttribute("currentUser", currentUser);
+        model.addAttribute("userId", currentUser.getUserId());
+
         List<Community> communities = communityService.getAllCommunitiesSorted();
         model.addAttribute("communities", communities);
 
-        User currentUser = userService.getAuthenticatedUser();
+
         List<Roles_In_Communities> rolesForUser = rolesService.getAllCommunitiesForAUser(currentUser);
         model.addAttribute("roles_for_a_user", rolesForUser);
 
@@ -185,13 +198,25 @@ public class CommunityController {
     public String showsearchedCommunities(Model model,
                                           @RequestParam(value = "writing", required = true) String writing)
     {
+        User currentUser = userService.getAuthenticatedUser();
+
+        model.addAttribute("currentUser", currentUser);
+        model.addAttribute("userId", currentUser.getUserId());
+
         List<Community> communities = communityService.getCommunitiesByTitleContaining(writing);
         model.addAttribute("communities", communities);
 
         return "Communities/SearchedCommunities";
     }
 
-
+    @PostMapping("/upload/{communityId}")
+    public String handleFileUpload(@RequestParam("file") MultipartFile file, @PathVariable Long communityId, Model model) {
+        String filename = fileUploadService.store(file);
+        String fileDownloadUri = "/files/" + filename;
+        communityService.updateCommunityImageUrl(communityId, fileDownloadUri);
+        model.addAttribute("message", "File uploaded successfully: " + filename);
+        return "redirect:/Communities/community/" + communityId;
+    }
 
 
 

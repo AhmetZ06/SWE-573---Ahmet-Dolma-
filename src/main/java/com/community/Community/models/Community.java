@@ -48,8 +48,8 @@ public class Community {
     @Column(nullable = false)
     private boolean isArchived;
 
-    @Column
-    private String image;
+    @Column(name = "image_url")
+    private String imageUrl;
 
     private Instant createdDate;
 

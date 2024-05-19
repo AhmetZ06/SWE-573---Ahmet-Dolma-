@@ -56,6 +56,9 @@ public class ProfileController {
 
     @GetMapping("/{userId}")
     public String getUserProfile(@PathVariable Long userId, Model model) {
+        User currentUser = userService.getAuthenticatedUser();
+        model.addAttribute("currentUser", currentUser);
+        model.addAttribute("userId", currentUser.getUserId());
         User user = userService.findUserById(userId);
         Profile profile = profileService.getProfileByUser(user);
         List<Post> userPosts = postService.findPostsByUser(user);

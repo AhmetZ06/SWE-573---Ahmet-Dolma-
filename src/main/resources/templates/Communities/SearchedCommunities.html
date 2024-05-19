@@ -9,7 +9,7 @@
 </head>
 <body>
 <!--Navigation bar-->
-<div th:replace="fragments/navbar :: navbar"></div>
+<div th:replace="~{fragments/navbar :: navbar(${userId})}"></div>
 
 <div class="container">
     <h1 class="text-center">Available Communities</h1>

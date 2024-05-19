@@ -63,6 +63,9 @@ public class PostController {
 
     @GetMapping("/create")
     public String showCreatePostForm(@PathVariable Long communityId, Model model) {
+        User currentUser = userService.getAuthenticatedUser();
+        model.addAttribute("currentUser", currentUser);
+        model.addAttribute("userId", currentUser.getUserId());
         List<PostTemplate> templates = postTemplateService.getPostTemplateByCommunityId(communityId);
         model.addAttribute("templates", templates);
         model.addAttribute("communityId", communityId);
@@ -99,6 +102,9 @@ public class PostController {
 
     @GetMapping("/templates/{templateId}/loadFields")
     public String loadTemplateFields(@PathVariable Long communityId, @PathVariable Long templateId, Model model) {
+        User currentUser = userService.getAuthenticatedUser();
+        model.addAttribute("currentUser", currentUser);
+        model.addAttribute("userId", currentUser.getUserId());
         PostTemplate template = postTemplateService.getPostTemplateByTemplateId(templateId);
         model.addAttribute("post", new Post());
         model.addAttribute("templates", postTemplateService.getPostTemplateByCommunityId(communityId));

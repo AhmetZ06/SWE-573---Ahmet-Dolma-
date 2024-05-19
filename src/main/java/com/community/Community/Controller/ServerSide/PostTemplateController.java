@@ -12,6 +12,7 @@ import com.community.Community.models.Community;
 import com.community.Community.models.Posts.CustomField;
 import com.community.Community.models.Posts.PostTemplate;
 import com.community.Community.models.Posts.Post;
+import com.community.Community.models.Users.User;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -62,6 +63,9 @@ public class PostTemplateController {
 
     @GetMapping("/create")
     public String showCreateTemplateForm(Model model) {
+        User currentUser = userService.getAuthenticatedUser();
+        model.addAttribute("currentUser", currentUser);
+        model.addAttribute("userId", currentUser.getUserId());
         PostTemplate postTemplate = new PostTemplate();
         if (postTemplate.getFields() == null || postTemplate.getFields().isEmpty()) {
             postTemplate.setFields(new ArrayList<>());
@@ -94,6 +98,9 @@ public String createTemplate(@Valid @ModelAttribute PostTemplate postTemplate, B
 
     @GetMapping
     public String viewTemplates(Model model) {
+        User currentUser = userService.getAuthenticatedUser();
+        model.addAttribute("currentUser", currentUser);
+        model.addAttribute("userId", currentUser.getUserId());
         Long communityId = (Long) model.getAttribute("communityId");
         model.addAttribute("templates", postTemplateService.getPostTemplateByCommunityId(communityId));
         return "view-templates";
@@ -101,6 +108,9 @@ public String createTemplate(@Valid @ModelAttribute PostTemplate postTemplate, B
 
     @GetMapping("/create-post/{templateId}")
     public String showCreatePostForm(@PathVariable("templateId") Long templateId, Model model) {
+        User currentUser = userService.getAuthenticatedUser();
+        model.addAttribute("currentUser", currentUser);
+        model.addAttribute("userId", currentUser.getUserId());
         PostTemplate postTemplate = postTemplateService.getPostTemplateByTemplateId(templateId);
         Post post = new Post();
         post.setPostTemplate(postTemplate);

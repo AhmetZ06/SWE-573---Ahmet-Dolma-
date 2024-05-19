@@ -70,5 +70,11 @@ public class CommunityService{
         return communityRepository.findByNameContainingIgnoreCaseOrderByNameAsc(title);
     }
 
+    public Community updateCommunityImageUrl(Long communityId, String imageUrl) {
+        Community community = communityRepository.findByCommunityId(communityId);
+        community.setImageUrl(imageUrl);
+        return communityRepository.save(community);
+    }
+
 
 }
