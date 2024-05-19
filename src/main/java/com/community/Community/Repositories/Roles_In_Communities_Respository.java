@@ -15,13 +15,13 @@ import java.util.Optional;
 public interface Roles_In_Communities_Respository extends JpaRepository<Roles_In_Communities, Long> {
 
 
-    Roles_In_Communities findByCommunity(Community community);
-
     Optional<Roles_In_Communities> findByUserAndCommunity(User user, Community community);
 
     Optional<Roles_In_Communities> findById(User_Community_Composite_Key id);
 
     List<Roles_In_Communities> findByUser(User user);
+
+    List<Roles_In_Communities> findByCommunity(Community community);
 
     void deleteRoles_In_CommunitiesByUser(User user);
     void deleteRoles_In_CommunitiesByUserAndCommunity(User user, Community community);

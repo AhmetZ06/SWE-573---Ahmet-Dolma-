@@ -134,7 +134,7 @@ public class CommunityController {
             model.addAttribute("isSubscribed", isSubscribed);
             model.addAttribute("posts", posts);
             model.addAttribute("show_posts",true);
-
+            model.addAttribute("users", rolesService.getRolesInCommunity(communityService.getCommunityById(communityId)));
         } else {
             model.addAttribute("isMember", false);
             model.addAttribute("isAdmin", false);
@@ -162,7 +162,6 @@ public class CommunityController {
 
         List<Community> communities = communityService.getAllCommunitiesSorted();
         model.addAttribute("communities", communities);
-
 
         List<Roles_In_Communities> rolesForUser = rolesService.getAllCommunitiesForAUser(currentUser);
         model.addAttribute("roles_for_a_user", rolesForUser);

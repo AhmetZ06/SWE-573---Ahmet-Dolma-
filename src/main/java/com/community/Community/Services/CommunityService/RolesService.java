@@ -60,6 +60,10 @@ public class RolesService {
         rolesInCommunitiesRepository.save(ric);
     }
 
+    public List<Roles_In_Communities> getRolesInCommunity(Community community) {
+        return rolesInCommunitiesRepository.findByCommunity(community);
+    }
+
     @Transactional
     public void removeMemberFromUserInCommunity(User user, Community community) {
 
