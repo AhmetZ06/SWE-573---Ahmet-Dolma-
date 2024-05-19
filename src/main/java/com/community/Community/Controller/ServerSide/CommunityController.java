@@ -126,15 +126,24 @@ public class CommunityController {
         model.addAttribute("communityId", communityId);
 
         if (roles != null) {
-            boolean isSubscribed = true;
-            boolean showPosts = true;
+            boolean isSubscribed = !roles.getRole().equals("REQUESTED");
+            if (roles.getRole().equals("MEMBER") || roles.getRole().equals("MODERATOR") || roles.getRole().equals("ADMIN") || isKralid) {
+                model.addAttribute("show_posts",true);
+                model.addAttribute("users", rolesService.getRolesInCommunity(communityService.getCommunityById(communityId)));
+                model.addAttribute("show_posts",true);
+            } else {
+                model.addAttribute("show_posts",false);
+            }
+            if (roles.getRole().equals("REQUESTED")) {
+                model.addAttribute("isRequested", true);
+            } else {
+                model.addAttribute("isRequested", false);
+            }
             model.addAttribute("isMember", roles.getRole().equals("MEMBER"));
             model.addAttribute("isAdmin", roles.getRole().equals("ADMIN"));
             model.addAttribute("isModerator", roles.getRole().equals("MODERATOR"));
             model.addAttribute("isSubscribed", isSubscribed);
-            model.addAttribute("posts", posts);
-            model.addAttribute("show_posts",true);
-            model.addAttribute("users", rolesService.getRolesInCommunity(communityService.getCommunityById(communityId)));
+
         } else {
             model.addAttribute("isMember", false);
             model.addAttribute("isAdmin", false);
@@ -181,6 +190,63 @@ public class CommunityController {
             redirectAttributes.addFlashAttribute("successMessage", "Joined the Community!");
             return "redirect:/Communities/community/" + communityId;
     }
+
+    @PostMapping("/Communities/community/{communityId}/joinrequest")
+    public String joinRequestCommunity(@PathVariable("communityId") Long communityId, RedirectAttributes redirectAttributes){
+        Community community = communityService.getCommunityById(communityId);
+        User user = userService.getAuthenticatedUser();
+        rolesService.addMemberToUserInCommunity(community, user, "REQUESTED");
+        redirectAttributes.addFlashAttribute("successMessage", "Request sent to join the Community!");
+        return "redirect:/Communities/community/" + communityId;
+    }
+
+    @PostMapping("/Communities/community/{communityId}/acceptrequest/{userId}")
+    public String acceptRequest(@PathVariable("communityId") Long communityId, @PathVariable("userId") Long userId, RedirectAttributes redirectAttributes){
+        Community community = communityService.getCommunityById(communityId);
+        User user = userRepository.findByUserId(userId);
+        rolesService.addMemberToUserInCommunity(community, user, "MEMBER");
+        redirectAttributes.addFlashAttribute("successMessage", "Request accepted!");
+        return "redirect:/Communities/community/" + communityId;
+    }
+
+    @PostMapping("/Communities/community/{communityId}/rejectrequest/{userId}")
+    public String rejectRequest(@PathVariable("communityId") Long communityId, @PathVariable("userId") Long userId, RedirectAttributes redirectAttributes){
+        Community community = communityService.getCommunityById(communityId);
+        User user = userRepository.findByUserId(userId);
+        rolesService.removeMemberFromUserInCommunity(user, community);
+        redirectAttributes.addFlashAttribute("successMessage", "Request rejected!");
+        return "redirect:/Communities/community/" + communityId;
+    }
+
+    @PostMapping("/Communities/community/{communityId}/remove/{userId}")
+    public String removeMember(@PathVariable("communityId") Long communityId, @PathVariable("userId") Long userId, RedirectAttributes redirectAttributes){
+        Community community = communityService.getCommunityById(communityId);
+        User user = userRepository.findByUserId(userId);
+        rolesService.removeMemberFromUserInCommunity(user, community);
+        redirectAttributes.addFlashAttribute("successMessage", "Member removed!");
+        return "redirect:/Communities/community/" + communityId;
+    }
+
+    @PostMapping("/Communities/community/{communityId}/makemoderator/{userId}")
+    public String makeModerator(@PathVariable("communityId") Long communityId, @PathVariable("userId") Long userId, RedirectAttributes redirectAttributes){
+        Community community = communityService.getCommunityById(communityId);
+        User user = userRepository.findByUserId(userId);
+        rolesService.addMemberToUserInCommunity(community, user, "MODERATOR");
+        redirectAttributes.addFlashAttribute("successMessage", "Moderator added!");
+        return "redirect:/Communities/community/" + communityId;
+    }
+
+    @PostMapping("/Communities/community/{communityId}/canceljoinrequest")
+    public String cancelJoinRequest(@PathVariable("communityId") Long communityId, RedirectAttributes redirectAttributes){
+        Community community = communityService.getCommunityById(communityId);
+        User user = userService.getAuthenticatedUser();
+        rolesService.removeMemberFromUserInCommunity(user, community);
+        redirectAttributes.addFlashAttribute("successMessage", "Request cancelled!");
+        return "redirect:/Communities/community/" + communityId;
+    }
+
+
+
 
     @PostMapping("/Communities/community/{communityId}/leave")
     public String leaveCommunity(@PathVariable("communityId") Long communityId, RedirectAttributes redirectAttributes) {

@@ -63,7 +63,8 @@ public class ProfileController {
         Profile profile = profileService.getProfileByUser(user);
         List<Post> userPosts = postService.findPostsByUser(user);
         List<Roles_In_Communities> joinedCommunities = rolesService.getAllCommunitiesForAUser(user);
-
+        boolean isCurrentUser = currentUser.getUserId()==(userId);
+        model.addAttribute("isCurrentUser", isCurrentUser);
         model.addAttribute("profile", profile);
         model.addAttribute("userPosts", userPosts);
         model.addAttribute("joinedCommunities", joinedCommunities);

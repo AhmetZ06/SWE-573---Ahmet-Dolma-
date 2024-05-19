@@ -28,14 +28,20 @@
     <div class="col-md-4">
       <!-- Profile Photo Section -->
       <h2>Profile Photo</h2>
+      <div th:if="${isCurrentUser}">
       <form th:action="@{/profile/upload/{profileId}(profileId=${profile.profileId})}" method="POST" enctype="multipart/form-data">
         <input type="file" name="file" class="form-control mb-2" />
         <input type="hidden" name="userId" th:value="${profile.user.userId}" />
         <button type="submit" class="btn btn-primary">Upload</button>
       </form>
-      <div th:if="${profile.imageUrl}">
-        <img th:src="@{${profile.imageUrl}}" alt="Profile Photo" class="profile-photo mt-2" />
       </div>
+
+
+        <div th:if="${profile.imageUrl}">
+          <img th:src="@{${profile.imageUrl}}" alt="Profile Photo" class="profile-photo mt-2" />
+        </div>
+
+
     </div>
     <div class="col-md-8">
       <!-- User Info Section -->
