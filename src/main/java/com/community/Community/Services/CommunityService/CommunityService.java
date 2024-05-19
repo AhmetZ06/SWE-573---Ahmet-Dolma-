@@ -1,9 +1,12 @@
 package com.community.Community.Services.CommunityService;
 
 import com.community.Community.Repositories.CommunityRepository;
+import com.community.Community.Services.PostServices.PostTemplateService;
 import com.community.Community.dto.Community_Create_Dto;
 import com.community.Community.models.Community;
+import com.community.Community.models.Posts.PostTemplate;
 import com.community.Community.models.Users.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.community.Community.Repositories.UserRepository;
 
@@ -26,7 +29,6 @@ public class CommunityService{
     }
 
     public void saveCommunity(Community_Create_Dto communityDto) {
-
         Community community = new Community();
         community.setName(communityDto.getName());
         community.setDescription(communityDto.getDescription());
@@ -35,7 +37,6 @@ public class CommunityService{
         community.setOwner(owneruser);
         communityRepository.save(community);
         setAdminbyDefault(owneruser, community);
-
     }
 
     public Community findByName(String name) {
@@ -52,6 +53,7 @@ public class CommunityService{
         rolesService.addMemberToUserInCommunity(community, user, "ADMIN");
 
     }
+
     public List<Community> getAllCommunities() {
         return communityRepository.findAll();
     }

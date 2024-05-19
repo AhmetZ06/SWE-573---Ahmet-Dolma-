@@ -55,19 +55,24 @@ public class PostTemplateService {
         return postTemplateRepository.save(postTemplate);
     }
 
-    // Retrieve all post templates
-    public List<PostTemplate> getAllTemplates() {
-        return postTemplateRepository.findAll();
+    @Transactional
+    public PostTemplate setDefaultPostTemplate(Community community) {
+        PostTemplate postTemplate = new PostTemplate();
+        postTemplate.setCommunity(community);
+        postTemplate.setTitle("Default Post Template");
+        postTemplate.setDescription("This is the default post template for the community");
+        postTemplateRepository.save(postTemplate);
+        return postTemplate;
     }
 
-    // Retrieve post templates by community ID
-    public List<PostTemplate> getPostTemplateByCommunityid(Long id) {
-        Community community = communityService.getCommunityById(id);
+
+    public List<PostTemplate> getPostTemplateByCommunityId(long communityId) {
+        Community community = communityService.findByCommunityId(communityId);
         return postTemplateRepository.findPostTemplateByCommunity(community);
     }
 
-    public PostTemplate getPostTemplateById(Long id) {
-        return postTemplateRepository.findPostTemplateByTemplateId(id);
+    public PostTemplate getPostTemplateByTemplateId(Long TemplateId) {
+        return postTemplateRepository.findPostTemplateByTemplateId(TemplateId);
     }
 
 

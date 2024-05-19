@@ -46,25 +46,20 @@
             </div>
             <!-- Conditional Join Button, visible if user is not already a member -->
             <div th:if="${!isSubscribed}">
-            <form th:action="@{/Communities/community/{communityId}/join(communityId=${community.communityId})}" method="post">
-                <button type="submit" class="btn btn-primary">Join Community</button>
-            </form>
-            </div>
-
-            <div th:if="${isSubscribed}">
-                <div>
-                <form th:action="@{/Communities/community/{communityId}/leave(communityId=${community.communityId})}" method="post">
-                    <input type="hidden" name="_method" value="delete" />
-                    <button type="submit" class="btn btn-primary">Leave Community</button>
+                <form th:action="@{/Communities/community/{communityId}/join(communityId=${community.communityId})}" method="post">
+                    <button type="submit" class="btn btn-primary">Join Community</button>
                 </form>
             </div>
 
+            <div th:if="${isSubscribed}">
+                <form th:action="@{/Communities/community/{communityId}/leave(communityId=${community.communityId})}" method="post">
+                    <input type="hidden" name="_method" value="delete" />
+                    <button type="submit" class="btn btn-danger">Leave Community</button>
+                </form>
+            </div>
         </div>
-        </div>
-
     </div>
 
-    <!-- Posts Section -->
     <!-- Posts Section -->
     <div class="row">
         <div class="col-md-12">
@@ -77,10 +72,9 @@
 
                 <!-- Button for Members, Admins, or Moderators to create posts -->
                 <a th:if="${isMember || isAdmin || isModerator}"
-                   th:href="@{/choosePostTemplate(communityId=${community.communityId})}"
+                   th:href="@{/communities/{communityId}/posts/create(communityId=${community.communityId})}"
                    class="btn btn-success">Create Post</a>
             </div>
-
 
             <!-- Check if the user has permissions and if posts exist -->
             <div th:if="${show_posts}" class="post-container">
@@ -95,13 +89,15 @@
                         </div>
                     </div>
                     <h3 th:text="${post.title}">Post Title</h3>
-                    <p th:text="${post.contentData}">Post content here...</p>
+                    <div th:each="field : ${post.fields}">
+                        <p th:text="${field.key + ': ' + field.value}">Post field here...</p>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -1,5 +1,6 @@
 package com.community.Community.dto;
 
+import jakarta.persistence.Column;
 import lombok.*;
 
 @Data
@@ -9,8 +10,10 @@ import lombok.*;
 @Getter
 @Setter
 public class PostTemplateDto {
-    private boolean include_Pool;
-    private boolean include_Geolocation;
-    private boolean include_Event;
+    @Column(nullable = false)
+    private String title;
+
+    @Column(nullable = false)
+    private String description;
 }
 

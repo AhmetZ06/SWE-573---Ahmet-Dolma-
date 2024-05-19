@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Create Post</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/posttemplate.css}">
+</head>
+<body>
+<div class="container">
+    <h1 class="mt-5">Create Post</h1>
+    <div th:if="${param.success}" class="alert alert-success">Post Created</div>
+    <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
+    <form id="postForm" th:action="@{/communities/{communityId}/posts/create(communityId=${communityId})}" th:object="${post}" method="post">
+        <div class="form-group">
+            <label for="title">Title:</label>
+            <input type="text" id="title" th:field="*{title}" class="form-control" required>
+            <div th:if="${#fields.hasErrors('title')}" th:errors="*{title}" class="invalid-feedback"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="description">Description:</label>
+            <input type="text" id="description" th:field="*{description}" class="form-control" required>
+            <div th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="invalid-feedback"></div>
+        </div>
+
+        <div id="fields" class="form-group">
+            <div th:each="field : ${template.fields}">
+                <label th:for="${field.fieldName}" th:text="${field.fieldName}"></label>
+                <div th:switch="${field.fieldType}">
+                    <div th:case="'GEOLOCATION'">
+                        <div class="form-group border p-2">
+                            <h6>Geolocation</h6>
+                            <input type="text" class="form-control mb-2" th:id="${field.fieldName} + '_lat'" th:name="'fields[' + ${field.fieldName} + '_lat]'" placeholder="Latitude" required>
+                            <input type="text" class="form-control mb-2" th:id="${field.fieldName} + '_lon'" th:name="'fields[' + ${field.fieldName} + '_lon]'" placeholder="Longitude" required>
+                        </div>
+                    </div>
+                    <div th:case="'IMAGE'">
+                        <div class="form-group border p-2">
+                            <h6>Image</h6>
+                            <input type="url" class="form-control mb-2" th:id="${field.fieldName}" th:name="'fields[' + ${field.fieldName} + ']'" placeholder="Image URL" required>
+                        </div>
+                    </div>
+                    <div th:case="'VIDEO'">
+                        <div class="form-group border p-2">
+                            <h6>Video</h6>
+                            <input type="url" class="form-control mb-2" th:id="${field.fieldName}" th:name="'fields[' + ${field.fieldName} + ']'" placeholder="Video URL" required>
+                        </div>
+                    </div>
+                    <div th:case="'DATE'">
+                        <div class="form-group border p-2">
+                            <h6>Date</h6>
+                            <input type="date" class="form-control mb-2" th:id="${field.fieldName}" th:name="'fields[' + ${field.fieldName} + ']'" required>
+                        </div>
+                    </div>
+                    <div th:case="'INTEGER'">
+                        <div class="form-group border p-2">
+                            <h6>Integer</h6>
+                            <input type="number" class="form-control mb-2" th:id="${field.fieldName}" th:name="'fields[' + ${field.fieldName} + ']'" placeholder="Integer" required>
+                        </div>
+                    </div>
+                    <div th:case="'DOUBLE'">
+                        <div class="form-group border p-2">
+                            <h6>Double</h6>
+                            <input type="number" step="0.01" class="form-control mb-2" th:id="${field.fieldName}" th:name="'fields[' + ${field.fieldName} + ']'" placeholder="Double" required>
+                        </div>
+                    </div>
+                    <div th:case="'STRING'">
+                        <div class="form-group border p-2">
+                            <h6>String</h6>
+                            <input type="text" class="form-control mb-2" th:id="${field.fieldName}" th:name="'fields[' + ${field.fieldName} + ']'" placeholder="String" required>
+                        </div>
+                    </div>
+                    <div th:case="*">
+                        <div class="form-group border p-2">
+                            <input type="text" class="form-control mb-2" th:id="${field.fieldName}" th:name="'fields[' + ${field.fieldName} + ']'" required>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <input type="hidden" th:name="templateId" th:value="${template.templateId}">
+        <input type="hidden" th:name="communityId" th:value="${communityId}">
+
+        <button type="submit" class="btn btn-success">Create Post</button>
+    </form>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+</body>
+</html>

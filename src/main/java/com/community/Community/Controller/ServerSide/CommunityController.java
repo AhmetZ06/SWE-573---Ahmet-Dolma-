@@ -5,6 +5,7 @@ import com.community.Community.Repositories.UserRepository;
 import com.community.Community.Services.CommunityService.CommunityService;
 import com.community.Community.Services.CommunityService.RolesService;
 import com.community.Community.Services.PostServices.PostService;
+import com.community.Community.Services.PostServices.PostTemplateService;
 import com.community.Community.Services.UserServices.CustomUserDetailsService;
 import com.community.Community.dto.Community_Create_Dto;
 import com.community.Community.models.Community;
@@ -32,18 +33,24 @@ public class CommunityController {
     private UserRepository userRepository;
     private RolesService rolesService;
 
+    private PostTemplateService postTemplateService;
+
+
     public CommunityController(CommunityService communityService,
                                CustomUserDetailsService userService,
                                 PostRepository postRepository,
                                 PostService postService,
                                 UserRepository userRepository,
-                                RolesService rolesService) {
+                                RolesService rolesService,
+                                PostTemplateService postTemplateService) {
         this.communityService = communityService;
         this.userService = userService;
         this.postRepository = postRepository;
         this.postService = postService;
         this.userRepository = userRepository;
         this.rolesService = rolesService;
+        this.postTemplateService = postTemplateService;
+
     }
 
     @GetMapping("/createCommunity")
@@ -81,40 +88,44 @@ public class CommunityController {
         }
 
         communityService.saveCommunity(community_create_dto);
+        postTemplateService.setDefaultPostTemplate(communityService.findByName(community_create_dto.getName()));
 
         return "redirect:/Communities";
     }
 
-
     @GetMapping("/Communities/community/{communityId}")
     public String showCommunity(@PathVariable("communityId") Long communityId, Model model) {
-
         Community community = communityService.getCommunityById(communityId);
         User currentUser = userService.getAuthenticatedUser();
         model.addAttribute("community", community);
 
-        Roles_In_Communities roles = rolesService.getRoleByUserIdAndCommunityId(currentUser.getUserId(),    communityId);
+        Roles_In_Communities roles = rolesService.getRoleByUserIdAndCommunityId(currentUser.getUserId(), communityId);
 
-        boolean isKralid = currentUser.getUserId()== community.getOwner().getUserId();
-
+        boolean isKralid = currentUser.getUserId() == community.getOwner().getUserId();
         model.addAttribute("isKralid", isKralid);
 
         List<Post> posts = postRepository.findByCommunity(community);
+        for (Post post : posts) {
+            post.getFieldValues().forEach(fieldValue -> {
+                if (fieldValue.getCustomField().getFieldType().equals("STRING")) {
+                    model.addAttribute(fieldValue.getFieldName(), fieldValue.get());
+                } else if (fieldValue.getCustomField().getFieldType().equals("INTEGER")) {
+                    model.addAttribute(fieldValue.getFieldName(), fieldValue.getIntegerValue());
+                } // Add other field types as needed
+            });
+        }
 
         model.addAttribute("privatecommunity", community.getIsPrivate());
-
         model.addAttribute("communityId", communityId);
 
         if (roles != null) {
             boolean isSubscribed = true;
-            boolean showPosts = true;
             model.addAttribute("isMember", roles.getRole().equals("MEMBER"));
             model.addAttribute("isAdmin", roles.getRole().equals("ADMIN"));
             model.addAttribute("isModerator", roles.getRole().equals("MODERATOR"));
             model.addAttribute("isSubscribed", isSubscribed);
             model.addAttribute("posts", posts);
-            model.addAttribute("show_posts",true);
-
+            model.addAttribute("show_posts", true);
         } else {
             model.addAttribute("isMember", false);
             model.addAttribute("isAdmin", false);
@@ -124,13 +135,11 @@ public class CommunityController {
                 model.addAttribute("posts", null);
             } else {
                 model.addAttribute("posts", posts);
-                model.addAttribute("show_posts",true);
+                model.addAttribute("show_posts", true);
             }
-
         }
         return "Communities/genericCommunityTemplate2";
     }
-
 
     @GetMapping("/Communities")
     public String showCommunities(Model model) {
@@ -161,11 +170,8 @@ public class CommunityController {
     public String leaveCommunity(@PathVariable("communityId") Long communityId) {
 
         Community community = communityService.getCommunityById(communityId);
-
         User user = userService.getAuthenticatedUser();
-
         rolesService.removeMemberFromUserInCommunity(user,community);
-
         return "redirect:/Communities/community/" + communityId;
 
     }
@@ -179,6 +185,7 @@ public class CommunityController {
 
         return "Communities/SearchedCommunities";
     }
+
 
 
 

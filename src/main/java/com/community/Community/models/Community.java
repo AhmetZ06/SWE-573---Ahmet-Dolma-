@@ -62,6 +62,10 @@ public class Community {
     @OneToMany(fetch = LAZY)
     private Set<PostTemplate> postTemplates;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "defaultTemplateId", referencedColumnName = "templateId")
+    private PostTemplate defaultTemplate;
+
     @OneToMany(fetch = LAZY)
     private Set<Post> posts;
 

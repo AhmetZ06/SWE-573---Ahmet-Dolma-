@@ -80,13 +80,13 @@ public class PostTemplateController {
     @GetMapping
     public String viewTemplates(Model model) {
         Long communityId = (Long) model.getAttribute("communityId");
-        model.addAttribute("templates", postTemplateService.getPostTemplateByCommunityid(communityId));
+        model.addAttribute("templates", postTemplateService.getPostTemplateByCommunityId(communityId));
         return "view-templates";
     }
 
     @GetMapping("/create-post/{templateId}")
     public String showCreatePostForm(@PathVariable("templateId") Long templateId, Model model) {
-        PostTemplate postTemplate = postTemplateService.getPostTemplateById(templateId);
+        PostTemplate postTemplate = postTemplateService.getPostTemplateByTemplateId(templateId);
         Post post = new Post();
         post.setPostTemplate(postTemplate);
         model.addAttribute("post", post);

@@ -1,32 +1,35 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Create Post</title>
-    <link rel="stylesheet" type="text/css" href="/static/css/posttemplate.css">
-    <script type="text/javascript" src="/static/js/post_template.js"></script>
+    <title>Post Templates</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/posttemplate.css}">
 </head>
 <body>
-<h1>Create Post</h1>
-<form action="#" th:action="@{/communities/{communityId}/posts/create}" th:object="${post}" method="post">
-    <label for="title">Title:</label>
-    <input type="text" id="title" th:field="*{title}" required>
-    <div th:if="${#fields.hasErrors('title')}" th:errors="*{title}" class="error"></div>
-
-    <label for="description">Description:</label>
-    <input type="text" id="description" th:field="*{description}" required>
-    <div th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="error"></div>
-
-    <div id="fields" th:object="${post}">
-        <div th:each="field, iterStat : ${template.fields}" class="field-container">
-            <label th:for="*{fieldValues[__${iterStat.index}__].fieldValue}" th:text="${field.fieldName}">Field Name:</label>
-            <input type="text" th:field="*{fieldValues[__${iterStat.index}__].fieldValue}" required>
+<div class="container mt-5">
+    <h1 class="mb-4">Post Templates</h1>
+    <div class="row">
+        <div th:each="template : ${templates}" class="col-md-4 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title" th:text="${template.title}">Template Title</h5>
+                    <p class="card-text" th:text="${template.description}">Template Description</p>
+                    <div>
+                        <h6>Custom Fields:</h6>
+                        <ul class="list-group list-group-flush">
+                            <li th:each="field : ${template.fields}" class="list-group-item">
+                                <strong>Field Name:</strong> <span th:text="${field.fieldName}">Field Name</span><br>
+                                <strong>Field Type:</strong> <span th:text="${field.fieldType}">Field Type</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <form th:action="@{/communities/{communityId}/posts/templates/{templateId}/loadFields(communityId=${communityId},templateId=${template.templateId})}" method="get" class="mt-3">
+                        <button type="submit" class="btn btn-primary btn-block">Select Template</button>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
-
-    <input type="hidden" th:field="*{postTemplate.id}" th:value="${template.id}">
-    <input type="hidden" th:field="*{community.communityId}" th:value="${communityId}">
-
-    <button type="submit" class="submit-btn">Create Post</button>
-</form>
+</div>
 </body>
 </html>
