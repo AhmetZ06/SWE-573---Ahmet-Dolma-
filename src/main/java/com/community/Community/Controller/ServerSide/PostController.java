@@ -21,6 +21,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,7 +71,8 @@ public class PostController {
 
     @PostMapping("/create")
     public String createPost(@PathVariable Long communityId, @RequestParam Long templateId,
-                             @ModelAttribute Post post, @RequestParam Map<String, String> fields, BindingResult result, Model model) {
+                             @ModelAttribute Post post, @RequestParam Map<String, String> fields, BindingResult result, Model model,
+                             RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
             model.addAttribute("templates", postTemplateService.getPostTemplateByCommunityId(communityId));
             model.addAttribute("communityId", communityId);
@@ -89,33 +91,11 @@ public class PostController {
             model.addAttribute("communityId", communityId);
             return "create_post_2";
         }
-        return "redirect:/communities/" + communityId;
+
+        redirectAttributes.addFlashAttribute("successMessage", "Post is created successfully!");
+
+        return "redirect:/Communities/community/" + communityId;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     @GetMapping("/templates/{templateId}/loadFields")
     public String loadTemplateFields(@PathVariable Long communityId, @PathVariable Long templateId, Model model) {

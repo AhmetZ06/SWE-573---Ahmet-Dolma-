@@ -65,7 +65,7 @@ public class Post {
     )
     private Set<User> downvoters;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "TemplateId", referencedColumnName = "TemplateId", nullable = false)
     private PostTemplate postTemplate;
 

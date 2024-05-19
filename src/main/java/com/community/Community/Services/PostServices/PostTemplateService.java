@@ -10,8 +10,10 @@ import com.community.Community.models.Posts.CustomField;
 import com.community.Community.models.Posts.PostTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.BindingResult;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PostTemplateService {
@@ -49,6 +51,10 @@ public class PostTemplateService {
     @Transactional
     public PostTemplate createPostTemplate(PostTemplate postTemplate) {
         // Set the post template reference for each custom field
+        if (postTemplate.getFields() == null || postTemplate.getFields().isEmpty()) {
+            throw new IllegalArgumentException("Post template must have at least one field because there is a default template for each community containing a title and a description field.");
+        }
+
         for (CustomField field : postTemplate.getFields()) {
             field.setPostTemplate(postTemplate);
         }
@@ -63,6 +69,32 @@ public class PostTemplateService {
         postTemplate.setDescription("This is the default post template for the community");
         postTemplateRepository.save(postTemplate);
         return postTemplate;
+    }
+
+
+    public boolean isTitleAlreadyUsed(Community community, String title) {
+        PostTemplate existingTemplate = postTemplateRepository.findPostTemplateByCommunityAndTitle(community, title);
+
+        if (existingTemplate == null) {
+            return true;
+        } else{
+            return false;
+        }
+    }
+
+    public BindingResult validatePostTemplate(PostTemplate postTemplate, BindingResult result, Long communityId) {
+
+        if (postTemplate.getFields() == null || postTemplate.getFields().isEmpty()) {
+            result.rejectValue("fields", null, "You must add at least one field.");
+        }
+
+        if (!isTitleAlreadyUsed(communityService.getCommunityById(communityId), postTemplate.getTitle())) {
+
+            result.rejectValue("title", null, "A template with this title already exists.");
+
+        }
+
+        return result;
     }
 
 

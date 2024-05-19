@@ -17,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -63,7 +64,8 @@ public class CommunityController {
     @PostMapping("/createCommunity/save")
     public String createCommunity(@Valid @ModelAttribute("community") Community_Create_Dto community_create_dto,
                                   BindingResult result,
-                                  Model model) {
+                                  Model model,
+                                  RedirectAttributes redirectAttributes) {
 
         String communityName = community_create_dto.getName();
         User user = userService.getAuthenticatedUser();
@@ -89,43 +91,41 @@ public class CommunityController {
 
         communityService.saveCommunity(community_create_dto);
         postTemplateService.setDefaultPostTemplate(communityService.findByName(community_create_dto.getName()));
+        redirectAttributes.addFlashAttribute("successMessage", "Community is Created, Enjoy!");
 
         return "redirect:/Communities";
     }
 
+
     @GetMapping("/Communities/community/{communityId}")
     public String showCommunity(@PathVariable("communityId") Long communityId, Model model) {
+
         Community community = communityService.getCommunityById(communityId);
         User currentUser = userService.getAuthenticatedUser();
         model.addAttribute("community", community);
 
-        Roles_In_Communities roles = rolesService.getRoleByUserIdAndCommunityId(currentUser.getUserId(), communityId);
+        Roles_In_Communities roles = rolesService.getRoleByUserIdAndCommunityId(currentUser.getUserId(),    communityId);
 
-        boolean isKralid = currentUser.getUserId() == community.getOwner().getUserId();
+        boolean isKralid = currentUser.getUserId()== community.getOwner().getUserId();
+
         model.addAttribute("isKralid", isKralid);
 
         List<Post> posts = postRepository.findByCommunity(community);
-        for (Post post : posts) {
-            post.getFieldValues().forEach(fieldValue -> {
-                if (fieldValue.getCustomField().getFieldType().equals("STRING")) {
-                    model.addAttribute(fieldValue.getFieldName(), fieldValue.get());
-                } else if (fieldValue.getCustomField().getFieldType().equals("INTEGER")) {
-                    model.addAttribute(fieldValue.getFieldName(), fieldValue.getIntegerValue());
-                } // Add other field types as needed
-            });
-        }
 
         model.addAttribute("privatecommunity", community.getIsPrivate());
+
         model.addAttribute("communityId", communityId);
 
         if (roles != null) {
             boolean isSubscribed = true;
+            boolean showPosts = true;
             model.addAttribute("isMember", roles.getRole().equals("MEMBER"));
             model.addAttribute("isAdmin", roles.getRole().equals("ADMIN"));
             model.addAttribute("isModerator", roles.getRole().equals("MODERATOR"));
             model.addAttribute("isSubscribed", isSubscribed);
             model.addAttribute("posts", posts);
-            model.addAttribute("show_posts", true);
+            model.addAttribute("show_posts",true);
+
         } else {
             model.addAttribute("isMember", false);
             model.addAttribute("isAdmin", false);
@@ -135,11 +135,13 @@ public class CommunityController {
                 model.addAttribute("posts", null);
             } else {
                 model.addAttribute("posts", posts);
-                model.addAttribute("show_posts", true);
+                model.addAttribute("show_posts",true);
             }
+
         }
         return "Communities/genericCommunityTemplate2";
     }
+
 
     @GetMapping("/Communities")
     public String showCommunities(Model model) {
@@ -155,23 +157,24 @@ public class CommunityController {
 
 
     @PostMapping("/Communities/community/{communityId}/join")
-    public String joinCommunity(@PathVariable("communityId") Long communityId) {
+    public String joinCommunity(@PathVariable("communityId") Long communityId, RedirectAttributes redirectAttributes) {
 
             Community community = communityService.getCommunityById(communityId);
 
             User user = userService.getAuthenticatedUser();
 
             rolesService.addMemberToUserInCommunity(community, user, "MEMBER");
-
+            redirectAttributes.addFlashAttribute("successMessage", "Joined the Community!");
             return "redirect:/Communities/community/" + communityId;
     }
 
     @PostMapping("/Communities/community/{communityId}/leave")
-    public String leaveCommunity(@PathVariable("communityId") Long communityId) {
+    public String leaveCommunity(@PathVariable("communityId") Long communityId, RedirectAttributes redirectAttributes) {
 
         Community community = communityService.getCommunityById(communityId);
         User user = userService.getAuthenticatedUser();
         rolesService.removeMemberFromUserInCommunity(user,community);
+        redirectAttributes.addFlashAttribute("successMessage", "We are sad to see you leave our community :(");
         return "redirect:/Communities/community/" + communityId;
 
     }

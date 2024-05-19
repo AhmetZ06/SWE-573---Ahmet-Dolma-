@@ -18,6 +18,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
 
@@ -62,20 +63,34 @@ public class PostTemplateController {
     @GetMapping("/create")
     public String showCreateTemplateForm(Model model) {
         PostTemplate postTemplate = new PostTemplate();
-        postTemplate.setFields(new ArrayList<>()); // Initialize the fields list
+        if (postTemplate.getFields() == null || postTemplate.getFields().isEmpty()) {
+            postTemplate.setFields(new ArrayList<>());
+            postTemplate.getFields().add(new CustomField()); // Add one field by default
+        }
         postTemplate.setCommunity((Community) model.getAttribute("community"));
+        model.addAttribute("postTemplate", postTemplate);
+        model.addAttribute("communityId", model.getAttribute("communityId"));
+        return "create-template";
+    }
+
+@PostMapping("/create")
+public String createTemplate(@Valid @ModelAttribute PostTemplate postTemplate, BindingResult result, Model model,
+                             @PathVariable("communityId") Long communityId,
+                             RedirectAttributes redirectAttributes) {
+
+    result = postTemplateService.validatePostTemplate(postTemplate, result, communityId);
+
+    if (result.hasErrors()) {
+//        postTemplate = new PostTemplate();
         model.addAttribute("postTemplate", postTemplate);
         return "create-template";
     }
 
-    @PostMapping("/create")
-    public String createTemplate(@Valid @ModelAttribute PostTemplate postTemplate, BindingResult result, Model model) {
-        if (result.hasErrors()) {
-            return "create-template";
-        }
-        postTemplateService.createPostTemplate(postTemplate);
-        return "redirect:/communities/" + model.getAttribute("communityId") + "/post-templates";
-    }
+    postTemplate.setCommunity(communityService.findByCommunityId(communityId));
+    postTemplateService.createPostTemplate(postTemplate);
+    redirectAttributes.addFlashAttribute("successMessage", "Post template created successfully!");
+    return "redirect:/Communities/community/" + model.getAttribute("communityId");
+}
 
     @GetMapping
     public String viewTemplates(Model model) {
@@ -95,12 +110,13 @@ public class PostTemplateController {
     }
 
     @PostMapping("/create-post")
-    public String createPost(@Valid @ModelAttribute Post post, BindingResult result, Model model) {
+    public String createPost(@Valid @ModelAttribute Post post, BindingResult result, Model model,RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
             return "create-post";
         }
         postService.savePost(post);
-        return "redirect:/communities/" + model.getAttribute("communityId") + "/posts";
+        redirectAttributes.addFlashAttribute("successMessage", "Post created successfully!");
+        return "redirect:/communities/Community/" + model.getAttribute("communityId") ;
     }
 
     @PostMapping("/add-field")
@@ -109,4 +125,6 @@ public class PostTemplateController {
         model.addAttribute("postTemplate", postTemplate);
         return "create-template";
     }
+
+
 }

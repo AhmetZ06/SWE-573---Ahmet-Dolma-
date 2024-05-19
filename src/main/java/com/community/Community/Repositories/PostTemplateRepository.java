@@ -13,4 +13,6 @@ public interface PostTemplateRepository extends JpaRepository<PostTemplate, Long
 
     PostTemplate findPostTemplateByTemplateId(Long postTemplateId);
 
+    PostTemplate findPostTemplateByCommunityAndTitle(Community community, String templateTitle);
+
 }
