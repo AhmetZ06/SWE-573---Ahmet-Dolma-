@@ -42,12 +42,6 @@ public class RolesService {
         return rolesInCommunitiesRepository.findByUser(user);
     }
 
-
-
-
-
-
-
     public void addMemberToUserInCommunity(Community community, User user, String role) {
 
 

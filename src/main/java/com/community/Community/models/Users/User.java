@@ -56,6 +56,10 @@ public class User implements UserDetails {
     @OneToMany(fetch = LAZY)
     private Set<Comments> comments;
 
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "profileId", referencedColumnName = "profileId")
+    private Profile profile;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;

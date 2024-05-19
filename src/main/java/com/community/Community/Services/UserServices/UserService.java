@@ -16,24 +16,44 @@ public class UserService{
     private UserRepository userRepository;
 
     private PasswordEncoder passwordEncoder;
+    private Profile_Service profile_service;
 
     public UserService(UserRepository userRepository,
-                           PasswordEncoder passwordEncoder) {
+                           PasswordEncoder passwordEncoder,
+                           Profile_Service profile_service) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.profile_service = profile_service;
+    }
+
+    public User findUserById(long userId) {
+        return userRepository.findUserByUserId(userId);
     }
 
 
     public void saveUser(UserDto userDto) {
         System.out.println("Saving user: " + userDto.getEmail());
         User user = new User();
+        Profile profile = new Profile();
         user.setName(userDto.getName());
         user.setSurname(userDto.getSurname());
         user.setUsername(userDto.getUsername());
         user.setEmail(userDto.getEmail());
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        user.setProfile(profile);
         userRepository.save(user);
+
+        User user2 = userRepository.findByEmail(userDto.getEmail());
+        profile_service.initialize(user2, profile);
         System.out.println("User saved");
+    }
+
+    public User findUserByUserId(long userId) {
+        return userRepository.findUserByUserId(userId);
+    }
+
+    public User findUserByProfile(Profile profile) {
+        return userRepository.findUserByProfile(profile);
     }
 
     public User findUserByEmail(String email) {

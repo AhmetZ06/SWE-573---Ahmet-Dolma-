@@ -30,12 +30,16 @@ public class CustomUserDetailsService implements UserDetailsService {
         return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), Collections.emptyList());
     }
 
+    public User findUserById(long userId) {
+        return userRepository.findUserByUserId(userId);
+    }
 
     public User getAuthenticatedUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentUsername = authentication.getName();
         return userRepository.findByEmail(currentUsername);
     }
+
 
     public void setUserId(User user, long userId) {
         user.setUserId(userId);

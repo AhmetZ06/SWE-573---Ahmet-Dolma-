@@ -82,6 +82,8 @@ public class CommunityController {
         if (existingCommunity != null && existingCommunity.getName() != null && !existingCommunity.getName().isEmpty()) {
             result.rejectValue("name", null,
                     "There is already a community registered with the same name");
+            model.addAttribute("community", community_create_dto);
+            return "Communities/createCommunity";
         }
 
         if (result.hasErrors()) {

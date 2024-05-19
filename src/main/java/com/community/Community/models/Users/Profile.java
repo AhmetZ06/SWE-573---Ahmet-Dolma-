@@ -1,6 +1,5 @@
-package com.community.Community.models.Users.ex;
+package com.community.Community.models.Users;
 
-import com.community.Community.models.Users.User;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -12,7 +11,6 @@ import lombok.*;
 
 @Entity
 @Table(name = "profiles")
-
 public class Profile {
 
     @Id
@@ -22,4 +20,9 @@ public class Profile {
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "profile")
     private User user;
 
+    @Column(name = "image_url")
+    private String imageUrl;
+
+    @Column(name = "user_info", length = 500)
+    private String userInfo;
 }

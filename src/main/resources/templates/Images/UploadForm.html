@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>User Profile</title>
+</head>
+<body>
+<h1>User Profile</h1>
+
+<!-- Profile Information -->
+<div>
+    <h2>Profile Photo</h2>
+    <form th:action="@{/files/upload/{profileId}(profileId=${profile.id})}" method="POST" enctype="multipart/form-data">
+        <input type="file" name="file" />
+        <button type="submit">Upload</button>
+    </form>
+
+    <div th:if="${profile.imageUrl}">
+        <img th:src="@{${profile.imageUrl}}" alt="Profile Photo" />
+    </div>
+</div>
+
+<!-- User Info -->
+<div>
+    <h2>User Info</h2>
+    <p>Name: <span th:text="${profile.user.name}"></span></p>
+    <p>Email: <span th:text="${profile.user.email}"></span></p>
+    <p>About: <span th:text="${profile.userInfo}"></span></p>
+</div>
+
+<!-- User Posts -->
+<div>
+    <h2>Your Posts</h2>
+    <div th:each="post : ${userPosts}">
+        <h3 th:text="${post.title}"></h3>
+        <p th:text="${post.content}"></p>
+    </div>
+</div>
+
+<!-- Joined Communities -->
+<div>
+    <h2>Joined Communities</h2>
+    <div th:each="community : ${joinedCommunities}">
+        <h3 th:text="${community.name}"></h3>
+        <p th:text="${community.description}"></p>
+    </div>
+</div>
+
+<!-- Messages -->
+<div th:if="${message}">
+    <p th:text="${message}"></p>
+</div>
+
+</body>
+</html>

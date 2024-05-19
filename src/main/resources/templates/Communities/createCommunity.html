@@ -29,15 +29,20 @@
                     <h2 class="text-center">Create Community</h2>
                 </div>
                 <div class="card-body">
+                    <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
+                    <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
+
                     <form th:action="@{/createCommunity/save}" method="post" class="form-horizontal" th:object="${community}">
                         <div class="form-group mb-3">
                             <label for="communityName" class="control-label">Community Name</label>
                             <input type="text" id="communityName" name="name" class="form-control" th:field="*{name}" required="required" />
+                            <div th:if="${#fields.hasErrors('name')}" class="text-danger" th:errors="*{name}">Invalid Name</div>
                         </div>
 
                         <div class="form-group mb-3">
                             <label for="communityDescription" class="control-label">Community Description</label>
                             <input type="text" id="communityDescription" name="description" class="form-control" th:field="*{description}" required="required" />
+                            <div th:if="${#fields.hasErrors('description')}" class="text-danger" th:errors="*{description}">Invalid Description</div>
                         </div>
 
                         <div class="form-group mb-3">
@@ -54,13 +59,6 @@
                                 </label>
                             </div>
                         </div>
-
-                        <!--                        <div class="form-group mb-3">-->
-<!--                            <label for="communityType" class="form-check-label">-->
-<!--                                <input type="checkbox" id="communityType" name="isPrivate" class="form-check-input" th:field="*{isPrivate}" />-->
-<!--                                Community is private-->
-<!--                            </label>-->
-<!--                        </div>-->
 
                         <div class="form-group mb-3">
                             <button type="submit" class="btn btn-primary">Create Community</button>
