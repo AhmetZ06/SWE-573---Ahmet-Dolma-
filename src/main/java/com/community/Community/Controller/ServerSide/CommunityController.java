@@ -24,6 +24,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.List;
 
 @Controller
@@ -330,7 +331,9 @@ public class CommunityController {
                                     @RequestParam("dateFrom") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateFrom,
                                     @RequestParam("dateTo") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateTo,
                                     @PathVariable long communityId) {
-        return prepareModelForCommunity(model, communityId, postRepository.findByCommunityAndCreationDateBetween(communityId, dateFrom, dateTo));
+        Instant instant1 = dateTo.atStartOfDay(ZoneId.systemDefault()).toInstant();
+        Instant instant2 = dateFrom.atStartOfDay(ZoneId.systemDefault()).toInstant();
+        return prepareModelForCommunity(model, communityId, postRepository.findByCommunityAndCreationDateBetween(communityId, instant2, instant1));
     }
 
     private String prepareModelForCommunity(Model model, long communityId, List<Post> posts) {

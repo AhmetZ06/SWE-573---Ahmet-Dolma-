@@ -33,7 +33,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     @Query("SELECT p FROM Post p WHERE p.community.communityId = :communityId AND p.creationDate BETWEEN :dateFrom AND :dateTo")
     List<Post> findByCommunityAndCreationDateBetween(@Param("communityId") long communityId,
-                                                     @Param("dateFrom") LocalDate dateFrom,
-                                                     @Param("dateTo") LocalDate dateTo);
+                                                     @Param("dateFrom") Instant dateFrom,
+                                                     @Param("dateTo") Instant dateTo);
 
 }
