@@ -1,5 +1,3 @@
-com\community\Community\models\ExcludedOldFiles\Post.class
+com\community\Community\Services\InterfacesExcluded\ICommunityService.class
 com\community\Community\Services\InterfacesExcluded\IUserService.class
 com\community\Community\Services\InterfacesExcluded\IPostService.class
-com\community\Community\models\ExcludedOldFiles\Post$PostBuilder.class
-com\community\Community\Services\InterfacesExcluded\ICommunityService.class
