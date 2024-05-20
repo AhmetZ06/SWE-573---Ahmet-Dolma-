@@ -8,10 +8,12 @@
     <title>Communities</title>
 </head>
 <body>
-<!--Navigation bar-->
-<div th:replace="fragments/navbar :: navbar"></div>
+<!-- Navigation bar -->
+<div th:replace="fragments/navbar :: navbar(userId=${userId})"></div>
 
 <div class="container">
+    <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
+
     <h1 class="text-center">Available Communities</h1>
     <div class="row justify-content-end">
         <div class="col-md-4">
@@ -36,6 +38,9 @@
                 </thead>
                 <tbody>
                 <tr th:each="community : ${communities}">
+                    <td>
+                        <img th:src="@{${community.imageUrl}}" alt="Community Image" class="img-fluid rounded-circle" style="width: 50px; height: 50px; object-fit: cover;" />
+                    </td>
                     <td th:text="${community.name}">Community Name</td>
                     <td th:text="${community.description}">Community Description</td>
                     <td th:class="${community.isPrivate} ? 'private-style' : 'public-style'"
@@ -55,6 +60,7 @@
                 <div th:each="role : ${roles_for_a_user}" class="mb-3">
                     <div class="card">
                         <div class="card-body">
+                            <img th:src="@{${role.community.imageUrl}}" alt="Community Image" class="img-fluid rounded-circle" style="width: 30px; height: 30px; object-fit: cover; border-radius: 50%;" />
                             <h5 class="card-title" th:text="${role.community.name}">Community Name</h5>
                             <p class="card-text" th:text="${role.role}">Role</p>
                             <form th:action="@{'/Communities/community/' + ${role.community.getCommunityId()}}" method="get">
