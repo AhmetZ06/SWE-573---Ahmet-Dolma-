@@ -133,9 +133,9 @@
     <!-- Main Content Row -->
     <div class="row">
         <!-- Users Section -->
-        <div class="col-md-4 members-container">
+        <div class="search-forms-container" >
             <!-- Advanced Search Forms Section -->
-            <div class="search-forms-container">
+            <div class="search-forms-container"th:if="${isSubscribed}">
                 <!-- Search by Template Form -->
                 <form th:action="@{/{communityId}/search/template(communityId=${community.communityId})}" method="get" class="input-group mb-3 search-form">
 
@@ -207,7 +207,7 @@
                           method="post" class="d-inline">
                         <button type="submit" class="btn btn-warning btn-sm">Make Moderator</button>
                     </form>
-                    <form th:if="${role.role.equals('MODERATOR') && !role.role.equals('ADMIN') && (isAdmin || isModerator)}"
+                    <form th:if="${role.role.equals('MODERATOR') && !role.role.equals('ADMIN') && (isAdmin)}"
                           th:action="@{/Communities/community/{communityId}/removemoderator/{userId}(communityId=${community.communityId}, userId=${role.user.userId})}"
                           method="post" class="d-inline">
                         <button type="submit" class="btn btn-secondary btn-sm">Remove Moderator</button>

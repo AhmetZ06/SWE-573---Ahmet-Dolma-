@@ -46,12 +46,12 @@ public class CommunityController {
 
     public CommunityController(CommunityService communityService,
                                CustomUserDetailsService userService,
-                                PostRepository postRepository,
-                                PostService postService,
-                                UserRepository userRepository,
-                                RolesService rolesService,
-                                PostTemplateService postTemplateService,
-                                FileUploadService fileUploadService) {
+                               PostRepository postRepository,
+                               PostService postService,
+                               UserRepository userRepository,
+                               RolesService rolesService,
+                               PostTemplateService postTemplateService,
+                               FileUploadService fileUploadService) {
         this.communityService = communityService;
         this.userService = userService;
         this.postRepository = postRepository;
@@ -129,8 +129,13 @@ public class CommunityController {
 
         model.addAttribute("communityId", communityId);
 
+        boolean isSubscribed = false;
+        boolean isRequested = false;
+
         if (roles != null) {
-            boolean isSubscribed = !roles.getRole().equals("REQUESTED");
+
+            isSubscribed = !roles.getRole().equals("REQUESTED");
+
             if (roles.getRole().equals("MEMBER") || roles.getRole().equals("MODERATOR") || roles.getRole().equals("ADMIN") || isKralid) {
                 model.addAttribute("show_posts",true);
                 model.addAttribute("users", rolesService.getRolesInCommunity(communityService.getCommunityById(communityId)));
@@ -139,11 +144,13 @@ public class CommunityController {
             } else {
                 model.addAttribute("show_posts",false);
             }
+
             if (roles.getRole().equals("REQUESTED")) {
                 model.addAttribute("isRequested", true);
             } else {
                 model.addAttribute("isRequested", false);
             }
+
             model.addAttribute("isMember", roles.getRole().equals("MEMBER"));
             model.addAttribute("isAdmin", roles.getRole().equals("ADMIN"));
             model.addAttribute("isModerator", roles.getRole().equals("MODERATOR"));
@@ -154,6 +161,7 @@ public class CommunityController {
             model.addAttribute("isAdmin", false);
             model.addAttribute("isModerator", false);
             model.addAttribute("isSubscribed", false);
+            model.addAttribute("isRequested", false);
             if (community.getIsPrivate()) {
                 model.addAttribute("posts", null);
             } else {
@@ -186,13 +194,13 @@ public class CommunityController {
     @PostMapping("/Communities/community/{communityId}/join")
     public String joinCommunity(@PathVariable("communityId") Long communityId, RedirectAttributes redirectAttributes) {
 
-            Community community = communityService.getCommunityById(communityId);
+        Community community = communityService.getCommunityById(communityId);
 
-            User user = userService.getAuthenticatedUser();
+        User user = userService.getAuthenticatedUser();
 
-            rolesService.addMemberToUserInCommunity(community, user, "MEMBER");
-            redirectAttributes.addFlashAttribute("successMessage", "Joined the Community!");
-            return "redirect:/Communities/community/" + communityId;
+        rolesService.addMemberToUserInCommunity(community, user, "MEMBER");
+        redirectAttributes.addFlashAttribute("successMessage", "Joined the Community!");
+        return "redirect:/Communities/community/" + communityId;
     }
 
     @PostMapping("/Communities/community/{communityId}/joinrequest")
@@ -337,13 +345,16 @@ public class CommunityController {
     }
 
     private String prepareModelForCommunity(Model model, long communityId, List<Post> posts) {
+
         Community community = communityService.getCommunityById(communityId);
         User currentUser = userService.getAuthenticatedUser();
+
         model.addAttribute("community", community);
         model.addAttribute("currentUser", currentUser);
         model.addAttribute("userId", currentUser.getUserId());
 
         Roles_In_Communities roles = rolesService.getRoleByUserIdAndCommunityId(currentUser.getUserId(), communityId);
+
         boolean isKralid = currentUser.getUserId() == community.getOwner().getUserId();
         model.addAttribute("isKralid", isKralid);
         model.addAttribute("privatecommunity", community.getIsPrivate());
