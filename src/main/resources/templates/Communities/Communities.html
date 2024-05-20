@@ -8,8 +8,8 @@
     <title>Communities</title>
 </head>
 <body>
-<!--Navigation bar-->
-<div th:replace="~{fragments/navbar :: navbar(${userId})}"></div>
+<!-- Navigation bar -->
+<div th:replace="fragments/navbar :: navbar(userId=${userId})"></div>
 
 <div class="container">
     <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>

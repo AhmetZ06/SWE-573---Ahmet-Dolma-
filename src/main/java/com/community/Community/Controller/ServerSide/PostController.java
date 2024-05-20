@@ -106,6 +106,12 @@ public class PostController {
         model.addAttribute("currentUser", currentUser);
         model.addAttribute("userId", currentUser.getUserId());
         PostTemplate template = postTemplateService.getPostTemplateByTemplateId(templateId);
+
+        if (template == null) {
+            model.addAttribute("errorMessage", "Template not found");
+            return "error"; // Return an appropriate error page
+        }
+
         model.addAttribute("post", new Post());
         model.addAttribute("templates", postTemplateService.getPostTemplateByCommunityId(communityId));
         model.addAttribute("template", template);
@@ -113,6 +119,7 @@ public class PostController {
         model.addAttribute("communityId", communityId);
         return "create_post_2";
     }
+
 
 }
 

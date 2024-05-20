@@ -131,6 +131,7 @@ public class CommunityController {
                 model.addAttribute("show_posts",true);
                 model.addAttribute("users", rolesService.getRolesInCommunity(communityService.getCommunityById(communityId)));
                 model.addAttribute("show_posts",true);
+                model.addAttribute("posts", posts);
             } else {
                 model.addAttribute("show_posts",false);
             }
@@ -163,7 +164,6 @@ public class CommunityController {
 
     @GetMapping("/Communities")
     public String showCommunities(Model model) {
-
         User currentUser = userService.getAuthenticatedUser();
 
         model.addAttribute("currentUser", currentUser);
