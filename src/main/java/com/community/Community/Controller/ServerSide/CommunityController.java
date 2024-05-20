@@ -14,6 +14,7 @@ import com.community.Community.models.Posts.Post;
 import com.community.Community.models.Users.Roles_In_Communities;
 import com.community.Community.models.Users.User;
 import jakarta.validation.Valid;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +22,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.time.Instant;
+import java.time.LocalDate;
 import java.util.List;
 
 @Controller
@@ -236,6 +239,24 @@ public class CommunityController {
         return "redirect:/Communities/community/" + communityId;
     }
 
+    @PostMapping("/Communities/community/{communityId}/removemoderator/{userId}")
+    public String removeModerator(@PathVariable("communityId") Long communityId, @PathVariable("userId") Long userId, RedirectAttributes redirectAttributes){
+        Community community = communityService.getCommunityById(communityId);
+        User user = userRepository.findByUserId(userId);
+        rolesService.addMemberToUserInCommunity(community, user, "MEMBER");
+        redirectAttributes.addFlashAttribute("successMessage", "Moderator Removed!");
+        return "redirect:/Communities/community/" + communityId;
+    }
+
+    @PostMapping("/Communities/community/{communityId}/removeuser/{userId}")
+    public String removeUser(@PathVariable("communityId") Long communityId, @PathVariable("userId") Long userId, RedirectAttributes redirectAttributes){
+        Community community = communityService.getCommunityById(communityId);
+        User user = userRepository.findByUserId(userId);
+        rolesService.removeMemberFromUserInCommunity(user, community);
+        redirectAttributes.addFlashAttribute("successMessage", "User removed!");
+        return "redirect:/Communities/community/" + communityId;
+    }
+
     @PostMapping("/Communities/community/{communityId}/canceljoinrequest")
     public String cancelJoinRequest(@PathVariable("communityId") Long communityId, RedirectAttributes redirectAttributes){
         Community community = communityService.getCommunityById(communityId);
@@ -283,9 +304,67 @@ public class CommunityController {
         return "redirect:/Communities/community/" + communityId;
     }
 
+    @GetMapping("/{communityId}/search/template")
+    public String showPostsWithTemplate(Model model,
+                                        @RequestParam("template") String writing,
+                                        @PathVariable long communityId) {
+        return prepareModelForCommunity(model, communityId, postRepository.findByCommunityAndTemplateTitleContaining(communityId, writing));
+    }
 
+    @GetMapping("/{communityId}/search/user")
+    public String showPostsWithUser(Model model,
+                                    @RequestParam("user") String writing,
+                                    @PathVariable long communityId) {
+        return prepareModelForCommunity(model, communityId, postRepository.findByCommunityAndUserUsernameContaining(communityId, writing));
+    }
 
+    @GetMapping("/{communityId}/search/field")
+    public String showPostsWithField(Model model,
+                                     @RequestParam("field") String writing,
+                                     @PathVariable long communityId) {
+        return prepareModelForCommunity(model, communityId, postRepository.findByCommunityAndFieldValueContaining(communityId, writing));
+    }
 
+    @GetMapping("/{communityId}/search/date")
+    public String showPostsWithDate(Model model,
+                                    @RequestParam("dateFrom") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateFrom,
+                                    @RequestParam("dateTo") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateTo,
+                                    @PathVariable long communityId) {
+        return prepareModelForCommunity(model, communityId, postRepository.findByCommunityAndCreationDateBetween(communityId, dateFrom, dateTo));
+    }
 
+    private String prepareModelForCommunity(Model model, long communityId, List<Post> posts) {
+        Community community = communityService.getCommunityById(communityId);
+        User currentUser = userService.getAuthenticatedUser();
+        model.addAttribute("community", community);
+        model.addAttribute("currentUser", currentUser);
+        model.addAttribute("userId", currentUser.getUserId());
 
+        Roles_In_Communities roles = rolesService.getRoleByUserIdAndCommunityId(currentUser.getUserId(), communityId);
+        boolean isKralid = currentUser.getUserId() == community.getOwner().getUserId();
+        model.addAttribute("isKralid", isKralid);
+        model.addAttribute("privatecommunity", community.getIsPrivate());
+        model.addAttribute("communityId", communityId);
+
+        if (roles != null) {
+            boolean isSubscribed = !roles.getRole().equals("REQUESTED");
+            model.addAttribute("isSubscribed", isSubscribed);
+            model.addAttribute("isMember", roles.getRole().equals("MEMBER"));
+            model.addAttribute("isAdmin", roles.getRole().equals("ADMIN"));
+            model.addAttribute("isModerator", roles.getRole().equals("MODERATOR"));
+            model.addAttribute("isRequested", roles.getRole().equals("REQUESTED"));
+            model.addAttribute("show_posts", isSubscribed || roles.getRole().equals("ADMIN") || roles.getRole().equals("MODERATOR") || isKralid);
+            model.addAttribute("users", rolesService.getRolesInCommunity(community));
+            model.addAttribute("posts", posts);
+        } else {
+            model.addAttribute("isMember", false);
+            model.addAttribute("isAdmin", false);
+            model.addAttribute("isModerator", false);
+            model.addAttribute("isSubscribed", false);
+            model.addAttribute("show_posts", !community.getIsPrivate());
+            model.addAttribute("posts", community.getIsPrivate() ? null : posts);
+        }
+
+        return "Communities/Posts/searchResults";
+    }
 }
